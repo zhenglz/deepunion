@@ -9,6 +9,20 @@ class PubChemDownloader(object):
     Notes
     -----
 
+    Examples
+    --------
+    >>> # download progesterone and save it into a pdb file
+    >>> from deepunion import downloader
+    >>> down = downloader.PubChemDownloader()
+    >>> m = down.get_compound("progesterone", type="name")
+    >>> smile = down.get_smile(m)
+    >>> # now convert SMILE to pdb
+    >>> from deepunion import builder
+    >>> b = builder.CompoundBuilder("pdb", "smile")
+    >>> b.load_mol(smile)
+    >>> b.generate_conformer()
+    >>> b.write_mol("progesterone.pdb")
+
     """
 
     def __init__(self):
