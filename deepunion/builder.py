@@ -167,11 +167,12 @@ class CompoundBuilder(object):
 
         Parameters
         ----------
-        mol_file
+        mol_file : str
+            The input molecule file name or a SMILE string
 
         Returns
         -------
-
+        self : return an instance of itself
         """
 
         self.mol_file = mol_file
