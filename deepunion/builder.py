@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from rdkit import Chem
 from rdkit.Chem import AllChem
 import os
+from subprocess import Popen
 
 
 class Molecule(object):
@@ -40,7 +43,7 @@ class Molecule(object):
         self : return an instance of itself
 
         """
-        converter = {
+        self.converter_ = {
             "pdb": Chem.MolFromPDBFile,
             "mol2": Chem.MolFromMol2File,
             "mol": Chem.MolFromMolFile,
@@ -48,7 +51,7 @@ class Molecule(object):
             "sdf": Chem.MolFromMolBlock,
         }
 
-        self.converter_ = converter
+        #self.converter_ = converter
 
         return self
 
@@ -69,10 +72,10 @@ class Molecule(object):
 
         self.mol_file = mol_file
 
-        if self.format in ["mol2", "mol", "pdb"]:
-            if not os.path.exists(self.mol_file):
-                print("Molecule file not exists. ")
-                return None
+        if self.format in ["mol2", "mol", "pdb", "sdf"] and\
+                os.path.exists(self.mol_file):
+            print("Molecule file not exists. ")
+            return None
 
         self.molecule_ = self.converter_[self.format](self.mol_file)
 
@@ -142,13 +145,14 @@ class CompoundBuilder(object):
         """
 
         if self.molecule_ is not None:
-
+            # add hydrogen atoms
             if self.add_H:
                 self.molecule_ = Chem.AddHs(self.molecule_)
 
             # generate 3D structure
             AllChem.EmbedMolecule(self.molecule_)
 
+            # optimize molecule structure
             if self.optimize_:
                 AllChem.MMFFOptimizeMolecule(self.molecule_)
 
@@ -217,4 +221,13 @@ class CompoundBuilder(object):
         self.converter_[self.out_format](self.molecule_, out_file)
 
         return self
+
+
+def babel_converter(input, output, babelexe="obabel"):
+
+    job = Popen("%s %s -O %s" % (babelexe, input, output), shell=True)
+    job.communicate()
+
+    return None
+
 

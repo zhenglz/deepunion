@@ -1,19 +1,49 @@
 # -*- coding: utf-8 -*-
 
-import pubchempy as pcp
 from pubchempy import get_compounds
 
 
 class PubChemDownloader(object):
+    """Compounds downloader from PubChem.
+
+    Notes
+    -----
+
+    """
 
     def __init__(self):
         pass
 
     def get_compound(self, name, type="name"):
+        """Get the compound given its name.
+
+        Parameters
+        ----------
+        name : str
+            The general name of a compound
+        type : str, default = name
+            The name format.
+
+        Returns
+        -------
+        results : list
+            The list of PubchemPy.compound object
+        """
 
         return get_compounds(name, namespace=type)[0]
 
     def download_from_list(self, name_list, type="name"):
+        """Given a list of compounds, download them
+
+        Parameters
+        ----------
+        name_list
+        type
+
+        Returns
+        -------
+
+        """
 
         results = []
         for n in name_list:
@@ -30,7 +60,7 @@ class PubChemDownloader(object):
 
         return results
 
-    def get_smile(self, compound, ):
+    def get_smile(self, compound):
         """Return the smile code of a compound
 
         Parameters
@@ -44,8 +74,24 @@ class PubChemDownloader(object):
 
         """
 
-        return compound.isomeric_smiles
+        if compound is not None:
+            return compound.isomeric_smiles
+        else:
+            return ""
 
     def get_cid(self, compound, ):
+        """Return the cid of a compound
 
-        return compound.cid
+        Parameters
+        ----------
+        compound : pubchempy.compound object
+
+        Returns
+        -------
+        cid : str
+            The cid of a compound.
+        """
+        if compound is not None:
+            return compound.cid
+        else:
+            return ""
