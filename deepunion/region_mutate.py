@@ -430,7 +430,7 @@ if __name__ == "__main__":
     centroids = sliding_box_centers(center, step_size,
                                     nsteps_to_slide,
                                     [True, True, True])
-    print(centroids)
+    #print(centroids)
     for i, c in enumerate(centroids):
         print(c, i)
         resids = resid_in_box(c, diameter, in_pdb, 'CA', 'LIG')
