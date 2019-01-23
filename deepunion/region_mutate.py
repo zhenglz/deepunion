@@ -316,6 +316,7 @@ def get_resid(fn, atom_names=['CA'], lig_code="LIG"):
 
     return resid
 
+
 def resid_in_box(box_center, diameter, fn, atom_names=['CA'], lig_code="LIG"):
 
     atom_ndx = get_atom_ndx(fn, atom_names, lig_code)
@@ -375,6 +376,7 @@ def origin_to_zero(fn, out_fn, origin):
         tofile.write(nl)
     tofile.close()
 
+
 def run_tleap_tofix(in_pdb, out_pdb):
 
     leapin = """
@@ -394,6 +396,8 @@ def run_tleap_tofix(in_pdb, out_pdb):
 
 
 if __name__ == "__main__":
+    # how to use:
+    # python region_mutate.py 2ovh_clean.pdb
 
     if len(sys.argv) < 2:
         print("Usage: \npython region_mutation.py input.pdb")
@@ -434,9 +438,9 @@ if __name__ == "__main__":
         tofile = trim_sidechain("temp.pdb", "t1.pdb", resids, chains=chains)
         tofile.close()
 
-        run_tleap_tofix("t1.pdb", "t2.pdb")
+        #run_tleap_tofix("t1.pdb", "t2.pdb")
         tofile = open("out_%d.pdb" % i, "w")
-        with open("t2.pdb") as lines:
+        with open("t1.pdb") as lines:
             tofile.write("CRYST1  %7.3f  %7.3f  %7.3f  90.00  90.00  90.00               1 \n" %
                          (diameter, diameter, diameter))
             for s in lines:
