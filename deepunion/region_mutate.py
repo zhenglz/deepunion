@@ -442,6 +442,3 @@ if __name__ == "__main__":
             for s in lines:
                 tofile.write(s)
             tofile.close()
-
-
-
