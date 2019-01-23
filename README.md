@@ -16,12 +16,8 @@ Then, download the package and install
     $ cd deepunion 
     $ pip install ./
 
-## Examples 
-Go to the deepunion/deepunion/test folder, explore the 
-scripts to generate PDB files from a list of smile file.
 
-
-## Tutorial
+## Quick start
 1 Convert a molecule to a pdb file, given its smile code
 
 
@@ -56,3 +52,7 @@ the structure and save the 3D coordinates into a pdb file.
     >>> b.load_mol(smile)
     >>> b.generate_conformer()
     >>> b.write_mol("progesterone.pdb")
+
+## Examples 
+Go to the deepunion/deepunion/test folder, explore the 
+scripts to generate PDB files from a list of smile file.

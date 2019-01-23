@@ -1,5 +1,6 @@
 import numpy as np
 import sys, os
+import subprocess as sp
 
 
 class rewritePDB(object):
@@ -72,7 +73,7 @@ class rewritePDB(object):
 
     def resNameChanger(self, inline, resname):
         resnamestr = " " * (4 - len(str(resname))) + str(resname)
-        newline = inline[:17] + resnamestr + inline[20:]
+        newline = inline[:16] + resnamestr + inline[20:]
         return newline
 
     def chainIDChanger(self, inline, chainid) :
@@ -239,6 +240,18 @@ class coordinatesPDB(object):
 
 
 def void_area(centriod, diameter):
+    """
+
+    Parameters
+    ----------
+    centriod : list, or iterable
+        The center for a void area
+    diameter : float
+
+    Returns
+    -------
+
+    """
 
     area = []
     for i in range(len(centriod)):
@@ -265,11 +278,12 @@ def sliding_box_centers(center, step_size=0.3, nstep=3, along_xyz=[True, True, T
 
     centriods = []
 
-    for i in range(along_xyz):
-        if along_xyz[i]:
-            for j in range(-1*nstep, nstep+1):
+    for i in range(-1*nstep, nstep+1):
+        for j in range(-1*nstep, nstep+1):
+            for k in range(-1*nstep, nstep+1):
                 c = center.copy()
-                c[i] = center[i] + step_size * j
+                for m in range(3):
+                    c[m] = center[m] + step_size * [i, j, k][m]
                 centriods.append(c)
 
     return centriods
@@ -298,7 +312,7 @@ def get_resid(fn, atom_names=['CA'], lig_code="LIG"):
     with open(fn) as lines:
         # only consider protein atoms
         lines = [ x for x in lines if ("ATOM" in x and lig_code not in x and x.split()[2] in atom_names)]
-        resid = [ x[22:26].strip() for x in lines if len(x.split()) > 2]
+        resid = [x[22:26].strip()+"_"+x[21] for x in lines if len(x.split()) > 2]
 
     return resid
 
@@ -307,12 +321,20 @@ def resid_in_box(box_center, diameter, fn, atom_names=['CA'], lig_code="LIG"):
     atom_ndx = get_atom_ndx(fn, atom_names, lig_code)
     resid = get_resid(fn, atom_names, lig_code)
 
+    resid_atomndx = dict(zip(atom_ndx, resid))
+
     resid_is_inbox = atoms_in_boxs(fn, atom_ndx, box_center, diameter)
 
-    return [x[0] for x in resid_is_inbox if x[1]]
+    selected_resid = []
+
+    for item in resid_is_inbox:
+        if item[1]:
+            selected_resid.append(resid_atomndx[item[0]])
+
+    return selected_resid
 
 
-def trim_sidechain(fn, out_fn, resid_list, atoms_to_keep=['CA', 'N', 'O', 'C'], mutate_to="ALA", chain="A"):
+def trim_sidechain(fn, out_fn, resid_list, atoms_to_keep=['CA', 'N', 'O', 'C'], mutate_to="ALA", chains="A"):
 
     rpdb = rewritePDB(fn)
 
@@ -320,29 +342,106 @@ def trim_sidechain(fn, out_fn, resid_list, atoms_to_keep=['CA', 'N', 'O', 'C'], 
 
     with open(fn) as lines:
         for s in lines:
-            if "ATOM" in s and  s[22:26].strip() in resid_list and s[21] == chain:
+            if "ATOM" in s and s[22:26].strip() in resid_list and s[21] in chains:
                 if s.split()[2] not in atoms_to_keep:
                     pass
                 else:
                     new_line = rpdb.resNameChanger(s, mutate_to)
                     tofile.write(new_line)
-            else:
-                tofile.writable(s)
+            elif "ATOM" in s or "HETATM" in s or "TER" in s:
+                tofile.write(s)
+
+    return tofile
+
+
+def origin_to_zero(fn, out_fn, origin):
+
+    with open(fn) as lines:
+        lines = [x for x in lines if (x.split()[0] in ["ATOM", "HETATM"]
+                                      and len(x.split())> 3)]
+        plines = lines.copy()
+
+    vector = -1.0 * np.array(origin)
+
+    pio = coordinatesPDB()
+
+    tofile = open(out_fn, 'w')
+
+    for s in plines:
+        crds = pio.getAtomCrdFromLines([s, ])[0]
+        new_crds = np.array(crds) + vector
+        nl = pio.replaceCrdInPdbLine(s, new_crds)
+
+        tofile.write(nl)
+    tofile.close()
+
+def run_tleap_tofix(in_pdb, out_pdb):
+
+    leapin = """
+    source leaprc.ff14SB
+    pdb = loadpdb %s
+    check pdb
+    savepdb pdb %s
+    """ % (in_pdb, out_pdb)
+
+    tofile = open("LeapIn.in", 'w')
+    tofile.write(leapin)
+
+    job = sp.Popen("tleap -f LeapIn.in", shell=True)
+    job.communicate()
+
+    return 1
+
 
 if __name__ == "__main__":
 
-    in_pdb = sys.argv[0]
+    if len(sys.argv) < 2:
+        print("Usage: \npython region_mutation.py input.pdb")
+
+    in_pdb = sys.argv[1]
+
+    # the sliding stride, =0.3 nm as stated in the paper
     step_size = 0.3
+    # how many moves in each direction. for example, if you give
+    # 3, that means, you will move 3 times in -x and x directions
+    # together you will generate 3 + 3 + 1 = 7 structures. You may not
+    # need to change it here. As the paper use 7 boxes per dimension.
     nsteps_to_slide = 3
-    center = [0, 0, 0]
-    diameter = 10.0
-    chain = "A"
+
+    # set a center point here, give the x, y, z coordinate
+    # of the center point, in unit nanometer
+    center = [29.582,  -3.843,  26.456]
+    # the size of the void box, you may need to modify it. The paper use
+    # 10.0 nm
+    diameter = 20.0
+    # the chain identifier
+    chains = ["A", "B"]
+
+    origin = np.array(center) - 0.5 * diameter
+    origin_to_zero(in_pdb, "temp.pdb", origin)
 
     # for x, y, z direction
     dimensions = ["x", "y", "z"]
-    for j in range(len(dimensions)):
-        centroids = sliding_box_centers(center, step_size, nsteps_to_slide, [True, False, False])
-        for c, i in enumerate(centroids):
-            resids = resid_in_box(c, diameter, in_pdb, 'CA', 'LIG')
 
-            trim_sidechain(in_pdb, "out__%s_%d.pdb" % (dimensions[j], i), resids, chain=chain)
+    centroids = sliding_box_centers(center, step_size,
+                                    nsteps_to_slide,
+                                    [True, True, True])
+    print(centroids)
+    for i, c in enumerate(centroids):
+        print(c, i)
+        resids = resid_in_box(c, diameter, in_pdb, 'CA', 'LIG')
+        # print(resids)
+        tofile = trim_sidechain("temp.pdb", "t1.pdb", resids, chains=chains)
+        tofile.close()
+
+        run_tleap_tofix("t1.pdb", "t2.pdb")
+        tofile = open("out_%d.pdb" % i, "w")
+        with open("t2.pdb") as lines:
+            tofile.write("CRYST1  %7.3f  %7.3f  %7.3f  90.00  90.00  90.00               1 \n" %
+                         (diameter, diameter, diameter))
+            for s in lines:
+                tofile.write(s)
+            tofile.close()
+
+
+
