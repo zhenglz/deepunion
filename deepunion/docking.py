@@ -76,6 +76,7 @@ class ReceptorPrepare(object):
             coord = np.array(coord)
 
         else:
+            # TODO: mdtraj extract specific coordinates
             ref = mt.load(self.receptor)
 
             # xyz
@@ -94,6 +95,8 @@ class ReceptorPrepare(object):
         return self
 
     def pdb2pdbqt(self, keep_polarH=True):
-        pass
 
+        raise NotImplemented
+
+        return self
 
