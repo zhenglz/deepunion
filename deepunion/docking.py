@@ -21,7 +21,7 @@ class VinaDocking(object):
         self.vina_exe = vina_exe
 
     def vina_config(self, receptor, ligand, outname,
-                    n_cpus, exhaustiveness, center, boxsize):
+                    n_cpus, exhaustiveness, center, boxsize, logfile):
 
         with open("vina.config", "w") as tofile:
 
@@ -41,14 +41,16 @@ class VinaDocking(object):
             tofile.write("ncpus = %d \n" % n_cpus)
             tofile.write("exhaustiveness = %d \n" % exhaustiveness)
 
+            tofile.write("log = %s \n" % logfile)
+
         return "vina.config"
 
     def run_docking(self, receptor, ligand, outname,
-                    n_cpus, exhaustiveness, center, boxsize):
+                    n_cpus, exhaustiveness, center, boxsize, logfile):
 
         config = self.vina_config(receptor, ligand, outname,
                                   n_cpus, exhaustiveness,
-                                  center, boxsize)
+                                  center, boxsize, logfile)
 
         job = sp.Popen("vina --config %s " % config)
         job.communicate()
@@ -98,5 +100,5 @@ class ReceptorPrepare(object):
 
         raise NotImplemented
 
-        return self
+        #return self
 
