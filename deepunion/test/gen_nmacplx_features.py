@@ -49,7 +49,7 @@ class AtomTypeCounts(object):
         all_pairs = itertools.product(self.receptor_indices, self.ligand_indices)
 
         if not self.distance_computed_:
-            self.distance_matrix_ = mt.compute_distances(self.pdb, atom_pairs=all_pairs)
+            self.distance_matrix_ = mt.compute_distances(self.pdb, atom_pairs=all_pairs)[]
 
         self.distance_computed_ = True
 
@@ -85,9 +85,8 @@ def generate_features(complex_fn, lig_code, ncutoffs):
         else:
             new_rec.append(e)
 
-
     rec_lig_element_combines = ["_".join(x) for x in list(itertools.product(new_rec, new_lig))]
-
+    cplx.distance_pairs()
     counts = []
 
     for cutoff in ncutoffs:
@@ -110,7 +109,9 @@ def generate_features(complex_fn, lig_code, ncutoffs):
 
 if __name__ == "__main__":
 
-    fn = sys.argv[1]
+    with open(sys.argv[1]) as lines:
+        inputs = [x.split()[:2] for x in lines if "#" not in s]
+
     out = sys.argv[2]
 
     n_cutoffs = np.linspace(0.2, 1.2, 10)
@@ -140,7 +141,7 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(results)
     df.index = [x[0] for x in inputs]
-    df.columns = ele_pairs
+    df.columns = ele_pairs * len(n_cutoffs)
 
     df.to_csv(out, sep=",", float_format="%.1f")
 
