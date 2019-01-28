@@ -49,7 +49,7 @@ class AtomTypeCounts(object):
         all_pairs = itertools.product(self.receptor_indices, self.ligand_indices)
 
         if not self.distance_computed_:
-            self.distance_matrix_ = mt.compute_distances(self.pdb, atom_pairs=all_pairs)[]
+            self.distance_matrix_ = mt.compute_distances(self.pdb, atom_pairs=all_pairs)[0]
 
         self.distance_computed_ = True
 
@@ -99,7 +99,7 @@ def generate_features(complex_fn, lig_code, ncutoffs):
         #count_dict = dict.fromkeys(keys, 0.0)
         d = OrderedDict()
         d = d.fromkeys(keys, 0.0)
-        for e_e, c in rec_lig_element_combines, counts[n]:
+        for e_e, c in zip(rec_lig_element_combines, counts[n]):
             d[e_e] += c
 
         results += d.values()
@@ -108,15 +108,11 @@ def generate_features(complex_fn, lig_code, ncutoffs):
 
 
 if __name__ == "__main__":
-
-    with open(sys.argv[1]) as lines:
-        inputs = [x.split()[:2] for x in lines if "#" not in s]
-
     out = sys.argv[2]
 
-    n_cutoffs = np.linspace(0.2, 1.2, 10)
+    n_cutoffs = np.linspace(0.1, 2.1, 20)
 
-    with open(fn) as lines:
+    with open(sys.argv[1]) as lines:
         lines = [x for x in lines if ("#" not in x and len(x.split()) >= 2)].copy()
         inputs = [x.split()[:2] for x in lines]
 
@@ -135,13 +131,19 @@ if __name__ == "__main__":
             results.append(r)
             success.append(1.)
 
+            print(fn)
+
         except:
             r = results[-1]
             success.append(0.)
+            print("Not successful. ", fn)
 
     df = pd.DataFrame(results)
     df.index = [x[0] for x in inputs]
-    df.columns = ele_pairs * len(n_cutoffs)
+    col_n = []
+    for i, n in enumerate(ele_pairs * len(n_cutoffs)):
+        col_n.append(n+"_"+str(i))
+    df.columns = col_n
 
     df.to_csv(out, sep=",", float_format="%.1f")
 
