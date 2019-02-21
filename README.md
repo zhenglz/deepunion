@@ -6,7 +6,7 @@ A collection of drug discovery tools
 Install anaconda first.
     
     $ conda create -name docking python=3.6
-    $ conda activate docking
+    $ source activate docking
 
 Before you install deepunion, you may need to have numpy,
 pandas, rdkit and pubchempy install
@@ -14,6 +14,7 @@ pandas, rdkit and pubchempy install
     $ conda install pandas numpy
     $ pip install pubchempy
     $ conda install -c rdkit rdkit
+    $ conda install -c omnia mdtraj
     
 Then, download the package and install
 
