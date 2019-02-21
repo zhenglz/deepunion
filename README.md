@@ -3,6 +3,11 @@ A collection of drug discovery tools
 
 
 ## Installation
+Install anaconda first.
+    
+    $ conda create -name docking python=3.6
+    $ conda activate docking
+
 Before you install deepunion, you may need to have numpy,
 pandas, rdkit and pubchempy install
 
