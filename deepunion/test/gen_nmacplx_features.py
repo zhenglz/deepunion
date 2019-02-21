@@ -1,11 +1,51 @@
+#!/usr/bin/env python
+
 import numpy as np
 import pandas as pd
 import mdtraj as mt
 import itertools
 import sys
 from collections import OrderedDict
+from mpi4py import MPI
+
 
 class AtomTypeCounts(object):
+    """Featurization of Protein-Ligand Complex based on
+    onion-shape distance counts of atom-types.
+
+    Parameters
+    ----------
+    pdb_fn : str
+        The input pdb file name.
+    lig_code : str
+        The ligand residue name in the input pdb file.
+
+    Attributes
+    ----------
+    pdb : mdtraj.Trajectory
+        The mdtraj.trajectory object containing the pdb.
+    receptor_indices : np.ndarray
+        The receptor (protein) atom indices in mdtraj.Trajectory
+    ligand_indices : np.ndarray
+        The ligand (protein) atom indices in mdtraj.Trajectory
+    rec_ele : np.ndarray
+        The element types of each of the atoms in the receptor
+    lig_ele : np.ndarray
+        The element types of each of the atoms in the ligand
+    lig_code : str
+        The ligand residue name in the input pdb file
+    pdb_parsed_ : bool
+        Whether the pdb file has been parsed.
+    distance_computed : bool
+        Whether the distances between atoms in receptor and ligand has been computed.
+    distance_matrix_ : np.ndarray, shape = [ N1 * N2, ]
+        The distances between all atom pairs
+        N1 and N2 are the atom numbers in receptor and ligand respectively.
+    counts_: np.ndarray, shape = [ N1 * N2, ]
+        The contact numbers between all atom pairs
+        N1 and N2 are the atom numbers in receptor and ligand respectively.
+
+    """
 
     def __init__(self, pdb_fn, lig_code):
 
@@ -87,10 +127,19 @@ def generate_features(complex_fn, lig_code, ncutoffs):
 
     rec_lig_element_combines = ["_".join(x) for x in list(itertools.product(new_rec, new_lig))]
     cplx.distance_pairs()
+
     counts = []
 
-    for cutoff in ncutoffs:
+    onion_counts = []
+
+    for i, cutoff in enumerate(ncutoffs):
         cplx.cutoff_count(cutoff)
+
+        if i == 0:
+            onion_counts.append(cplx.counts_)
+        else:
+            onion_counts.append(cplx.counts_ - counts[-1])
+
         counts.append(cplx.counts_)
 
     results = []
@@ -99,7 +148,7 @@ def generate_features(complex_fn, lig_code, ncutoffs):
         #count_dict = dict.fromkeys(keys, 0.0)
         d = OrderedDict()
         d = d.fromkeys(keys, 0.0)
-        for e_e, c in zip(rec_lig_element_combines, counts[n]):
+        for e_e, c in zip(rec_lig_element_combines, onion_counts[n]):
             d[e_e] += c
 
         results += d.values()
@@ -108,44 +157,69 @@ def generate_features(complex_fn, lig_code, ncutoffs):
 
 
 if __name__ == "__main__":
+    print("Start Now ... ")
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    size = comm.Get_size()
+
+    if rank == 0:
+        with open(sys.argv[1]) as lines:
+            lines = [x for x in lines if ("#" not in x and len(x.split()) >= 2)].copy()
+            inputs = [x.split()[0] for x in lines]
+
+        inputs_list = []
+        aver_size = int(len(inputs) / size)
+        print(size, aver_size)
+        for i in range(size-1):
+            inputs_list.append(inputs[int(i*aver_size):int((i+1)*aver_size)])
+        inputs_list.append(inputs[(size-1)*aver_size:])
+
+        #print(inputs_list)
+
+    else:
+        inputs_list = None
+
+    inputs = comm.scatter(inputs_list, root=0)
+    #print(rank, inputs)
+
     out = sys.argv[2]
-
-    n_cutoffs = np.linspace(0.1, 2.1, 20)
-
-    with open(sys.argv[1]) as lines:
-        lines = [x for x in lines if ("#" not in x and len(x.split()) >= 2)].copy()
-        inputs = [x.split()[:2] for x in lines]
+    n_cutoffs = np.linspace(0.1, 3.1, 60)
 
     results = []
-
     ele_pairs =[]
-
     success = []
 
     for p in inputs:
-        fn = p[0]
-        lig_code = p[1]
+        fn = p
+        lig_code = "LIG UNK"
 
         try:
             r, ele_pairs = generate_features(fn, lig_code, n_cutoffs)
             results.append(r)
             success.append(1.)
-
-            print(fn)
+            print(rank, fn)
 
         except:
-            r = results[-1]
+            #r = results[-1]
+            r = ['fn', ] + list([0., ]*3840) + [0.0, ]
+            results.append(r)
             success.append(0.)
             print("Not successful. ", fn)
 
     df = pd.DataFrame(results)
-    df.index = [x[0] for x in inputs]
+    try:
+        df.index = inputs
+    except:
+        df.index = np.arange(df.shape[0])
+
     col_n = []
+    #col_n = ['pdbid']
     for i, n in enumerate(ele_pairs * len(n_cutoffs)):
         col_n.append(n+"_"+str(i))
+#    col_n.append('success')
     df.columns = col_n
+#    df['success'] = success
+    df.to_csv(str(rank)+"_"+out, sep=",", float_format="%.1f", index=True)
 
-    df.to_csv(out, sep=",", float_format="%.1f")
-
-    print("Complete calculations. ")
+    print(rank, "Complete calculations. ")
 

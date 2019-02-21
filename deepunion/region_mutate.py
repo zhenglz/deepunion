@@ -395,7 +395,7 @@ def run_tleap_tofix(in_pdb, out_pdb):
     return 1
 
 
-if __name__ == "__main__":
+def main():
     # how to use:
     # python region_mutate.py 2ovh_clean.pdb
 
@@ -446,3 +446,4 @@ if __name__ == "__main__":
             for s in lines:
                 tofile.write(s)
             tofile.close()
+

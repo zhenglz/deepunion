@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="050feb0a-9d84-4d89-be82-82dd8d075ca5" name="Default Changelist" comment="modify gen void">
+    <list default="true" id="050feb0a-9d84-4d89-be82-82dd8d075ca5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/deepunion/test/smile2pdb_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deepunion.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deepunion.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/docking.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/docking.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/nma.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/nma.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/region_mutate.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/region_mutate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,61 +21,33 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/test/smile_to_pdb.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="31" column="27" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/docking.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/nma.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2176">
-              <caret line="132" column="45" selection-start-line="132" selection-start-column="33" selection-end-line="132" selection-end-column="45" />
+            <state relative-caret-position="182">
+              <caret line="153" column="34" lean-forward="true" selection-start-line="153" selection-start-column="34" selection-end-line="153" selection-end-column="34" />
               <folding>
-                <element signature="e#0#19#0" expanded="true" />
+                <element signature="e#1#24#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/test/run_nma.py">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/smile2pdb_pipeline.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="306">
+              <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
               <folding>
-                <element signature="e#23#42#0" expanded="true" />
+                <element signature="e#1#30#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/builder.py">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/code_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2890">
-              <caret line="173" column="60" selection-start-line="173" selection-start-column="16" selection-end-line="173" selection-end-column="60" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="138" column="40" selection-start-line="138" selection-start-column="40" selection-end-line="138" selection-end-column="40" />
+            <state>
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -77,40 +56,73 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/test/cat_rec_lig.py">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/compare2lists.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-306">
-              <caret line="15" column="37" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
+            <state relative-caret-position="306">
+              <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
               <folding>
-                <element signature="e#23#37#0" expanded="true" />
+                <element signature="e#0#34#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../dockingML/dockml/pdbIO.py">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/download_from_list.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="78" column="28" selection-start-line="78" selection-start-column="28" selection-end-line="78" selection-end-column="28" />
+            <state>
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deepunion/builder.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="382">
+              <caret line="179" column="23" lean-forward="true" selection-start-line="179" selection-start-column="23" selection-end-line="179" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/__init__.py">
+        <entry file="file://$PROJECT_DIR$/deepunion/region_mutate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" selection-start-line="4" selection-end-line="4" />
+            <state relative-caret-position="1134">
+              <caret line="449" lean-forward="true" selection-start-line="449" selection-end-line="449" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/setup.py">
+        <entry file="file://$PROJECT_DIR$/deepunion/fingerprints.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+            <state relative-caret-position="145">
+              <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/deepunion/downloader.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1453" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/deepunion/nma.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="400">
+              <caret line="162" column="1" selection-start-line="162" selection-start-column="1" selection-end-line="162" selection-end-column="1" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -130,32 +142,35 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/deepunion/region_mutate.py" />
-        <option value="$PROJECT_DIR$/deepunion/__init__.py" />
         <option value="$PROJECT_DIR$/deepunion/fingerprints.py" />
         <option value="$PROJECT_DIR$/deepunion/test/compare2lists.py" />
         <option value="$PROJECT_DIR$/setup.py" />
-        <option value="$PROJECT_DIR$/deepunion/docking.py" />
-        <option value="$PROJECT_DIR$/deepunion/nma.py" />
         <option value="$PROJECT_DIR$/deepunion/test/run_nma.py" />
         <option value="$PROJECT_DIR$/../dockingML/dockml/pdbIO.py" />
         <option value="$PROJECT_DIR$/deepunion/test/cat_rec_lig.py" />
         <option value="$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py" />
+        <option value="$PROJECT_DIR$/deepunion/builder.py" />
+        <option value="/scratch/liangzhen/onionnet/remove_shell0_predict_pka.py" />
+        <option value="/scratch/liangzhen/onionnet/predict_pka_noshell0_noH.py" />
+        <option value="$PROJECT_DIR$/deepunion/__init__.py" />
+        <option value="$PROJECT_DIR$/deepunion/region_mutate.py" />
+        <option value="$PROJECT_DIR$/deepunion/nma.py" />
+        <option value="$PROJECT_DIR$/deepunion/docking.py" />
+        <option value="$PROJECT_DIR$/deepunion/test/smile2pdb_pipeline.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="8" />
-    <option name="y" value="31" />
-    <option name="width" value="1362" />
-    <option name="height" value="741" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-239" />
+    <option name="y" value="57" />
+    <option name="width" value="1366" />
+    <option name="height" value="705" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -178,11 +193,12 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../dockingML" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="$USER_HOME$/.conda/envs/deeplearn/lib/python3.6/site-packages/deepunion" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -235,14 +251,21 @@
       <option name="project" value="LOCAL" />
       <updated>1548256128418</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="generate features">
+      <created>1548690753453</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1548690753453</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="8" y="31" width="1362" height="741" extended-state="0" />
+    <frame x="-2" y="-2" width="1284" height="888" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24832214" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26370135" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection Results" order="0" sideWeight="0.49968335" weight="0.3293011" />
@@ -254,8 +277,8 @@
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.17225951" side_tool="true" visible="true" weight="0.32302937" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.8277405" visible="true" weight="0.32302937" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.17791899" side_tool="true" visible="true" weight="0.22703412" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.822081" visible="true" weight="0.22703412" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49841672" weight="0.3293011" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -264,56 +287,27 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="modify gen void" />
-    <option name="LAST_COMMIT_MESSAGE" value="modify gen void" />
+    <MESSAGE value="generate features" />
+    <option name="LAST_COMMIT_MESSAGE" value="generate features" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/deepunion/nma.py</url>
+          <line>162</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/deepunion/region_mutate.py">
+    <entry file="file://$PROJECT_DIR$/deepunion/test/cat_rec_lig.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3213">
-          <caret line="191" column="8" selection-start-line="191" selection-start-column="8" selection-end-line="191" selection-end-column="8" />
+        <state relative-caret-position="-702">
+          <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/fingerprints.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/test/compare2lists.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/test/smile_to_pdb.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="31" column="27" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/docking.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/nma.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2176">
-          <caret line="132" column="45" selection-start-line="132" selection-start-column="33" selection-end-line="132" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#23#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -328,17 +322,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/builder.py">
+    <entry file="file:///scratch/liangzhen/onionnet/remove_shell0_predict_pka.py" />
+    <entry file="file:///scratch/liangzhen/onionnet/predict_pka.py" />
+    <entry file="file:///scratch/liangzhen/onionnet/predict_pka_notH.py" />
+    <entry file="file:///scratch/liangzhen/onionnet/predict_pka_noshell0_noH.py" />
+    <entry file="file://$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2890">
-          <caret line="173" column="60" selection-start-line="173" selection-start-column="16" selection-end-line="173" selection-end-column="60" />
+        <state relative-caret-position="2448">
+          <caret line="150" column="52" selection-start-line="150" selection-start-column="52" selection-end-line="150" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../dockingML/dockml/pdbIO.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="78" column="28" selection-start-line="78" selection-start-column="28" selection-end-line="78" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="85">
+          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -349,30 +354,100 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../dockingML/dockml/pdbIO.py">
+    <entry file="file://$PROJECT_DIR$/deepunion/test/smile_to_pdb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="78" column="28" selection-start-line="78" selection-start-column="28" selection-end-line="78" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/test/cat_rec_lig.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-306">
-          <caret line="15" column="37" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
+        <state relative-caret-position="102">
+          <caret line="27" selection-start-line="27" selection-end-line="36" selection-end-column="73" />
           <folding>
-            <element signature="e#23#37#0" expanded="true" />
+            <element signature="e#1#30#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py">
+    <entry file="file://$PROJECT_DIR$/deepunion/test/code_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="138" column="40" selection-start-line="138" selection-start-column="40" selection-end-line="138" selection-end-column="40" />
+        <state>
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/compare2lists.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/download_from_list.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/region_mutate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1134">
+          <caret line="449" lean-forward="true" selection-start-line="449" selection-end-line="449" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/nma.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="162" column="1" selection-start-line="162" selection-start-column="1" selection-end-line="162" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/fingerprints.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/downloader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1453" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/docking.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="153" column="34" lean-forward="true" selection-start-line="153" selection-start-column="34" selection-end-line="153" selection-end-column="34" />
+          <folding>
+            <element signature="e#1#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/smile2pdb_pipeline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
+          <folding>
+            <element signature="e#1#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/builder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="179" column="23" lean-forward="true" selection-start-line="179" selection-start-column="23" selection-end-line="179" selection-end-column="23" />
         </state>
       </provider>
     </entry>

@@ -1,0 +1,69 @@
+Metadata-Version: 1.2
+Name: deepunion
+Version: 0.1
+Summary: A collection of drug discovery tools
+Home-page: https://github.com/zhenglz/deepunion
+Author: zhenglz
+Author-email: zhenglz@outlook.com
+License: GPL-3.0
+Description: # deepunion
+        A collection of drug discovery tools
+        
+        
+        ## Installation
+        Before you install deepunion, you may need to have numpy,
+        pandas, rdkit and pubchempy install
+        
+            $ conda install pandas numpy
+            $ pip install pubchempy
+            $ conda install -c rdkit rdkit
+            
+        Then, download the package and install
+        
+            $ git clone http://github.com/zhenglz/deepunion.git
+            $ cd deepunion 
+            $ pip install ./
+        
+        
+        ## Quick start
+        1 Convert a molecule to a pdb file, given its smile code
+        
+        
+            >>> # generate 3D conformation from a SMILE code and 
+            >>> # save as a pdb file
+            >>> from deepunion import builder
+            >>> comp = builder.CompoundBuilder(out_format="pdb", in_format="smile")
+            >>> comp.in_format
+            'smile'
+            >>> comp.load_mol("CCCC")
+            <deepunion.builder.CompoundBuilder object at 0x7f0cd1d909b0>
+            >>> comp.generate_conformer()
+            <deepunion.builder.CompoundBuilder object at 0x7f0cd1d909b0>
+            >>> comp.write_mol("mol_CCCC.pdb")
+            <deepunion.builder.CompoundBuilder object at 0x7f0cd1d909b0>
+            >>> # the molecule has been saved to mol_CCCC.pdb in working directory
+            >>> # convert the pdb file into a pdbqt file
+            >>> babel_converter("mol_CCCC.pdb", "mol_CCCC.pdbqt")
+        
+        2 Search a molecule "progesterone" from pubchem, add hydrogen atoms and optimize
+        the structure and save the 3D coordinates into a pdb file.
+        
+               
+            >>> # download progesterone and save it into a pdb file
+            >>> from deepunion import downloader
+            >>> down = downloader.PubChemDownloader()
+            >>> m = down.get_compound("progesterone", type="name")
+            >>> smile = down.get_smile(m)
+            >>> # now convert SMILE to pdb
+            >>> from deepunion import builder
+            >>> b = builder.CompoundBuilder("pdb", "smile")
+            >>> b.load_mol(smile)
+            >>> b.generate_conformer()
+            >>> b.write_mol("progesterone.pdb")
+        
+        ## Examples 
+        Go to the deepunion/deepunion/test folder, explore the 
+        scripts to generate PDB files from a list of smile file.
+        
+Platform: UNKNOWN
+Requires-Python: >=3.5

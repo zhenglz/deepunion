@@ -160,5 +160,5 @@ def main():
 
     gnm.write_traj(inpdb, outpdb, ev, 10, step_size=0.1)
 
-main()
+#main()
 

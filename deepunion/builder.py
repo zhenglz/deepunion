@@ -241,9 +241,19 @@ class CompoundBuilder(object):
         return self
 
 
-def babel_converter(input, output, babelexe="obabel"):
+def babel_converter(input, output, babelexe="obabel", mode="general"):
 
-    job = Popen("%s %s -O %s" % (babelexe, input, output), shell=True)
+    cmd = ""
+    if mode == "general":
+        cmd = "%s %s -O %s" % (babelexe, input, output)
+    elif mode == "AddPolarH":
+        cmd = "%s %s -O %s -d" % (babelexe, input, "xxx_temp_noH.pdbqt")
+        job = Popen(cmd, shell=True)
+        job.communicate()
+        cmd = "%s %s -O %s --AddPolarH" % (babelexe, "xxx_temp_noH.pdbqt", output)
+    else:
+        pass
+    job = Popen(cmd, shell=True)
     job.communicate()
 
     return None
