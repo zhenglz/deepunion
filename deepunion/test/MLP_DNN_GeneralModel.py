@@ -51,4 +51,5 @@ if __name__ == "__main__":
 
     model.fit(Xtrain, ytrain, batch=128, epochs=400, verbose=1)
 
+    # save model
     model.save("DNN_MLP_solubility.h5")
