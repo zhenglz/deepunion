@@ -14,7 +14,7 @@ Then, download the package and install
 
     $ git clone http://github.com/zhenglz/deepunion.git
     $ cd deepunion 
-    $ pip install ./
+    $ pip install -e ./
 
 
 ## Quick start

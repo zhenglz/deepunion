@@ -125,11 +125,16 @@ def generate_features(complex_fn, lig_code, ncutoffs):
         else:
             new_rec.append(e)
 
+    # ligand element counts, it is a dictionary
+    # { "C": 10, "O": 2, "H": 18, "N": 4}
+    ligand_element_count = dict.fromkeys(all_elements, 0.0)
+    for e in new_lig:
+        ligand_element_count[e] += 1
+
     rec_lig_element_combines = ["_".join(x) for x in list(itertools.product(new_rec, new_lig))]
     cplx.distance_pairs()
 
     counts = []
-
     onion_counts = []
 
     for i, cutoff in enumerate(ncutoffs):
@@ -145,11 +150,11 @@ def generate_features(complex_fn, lig_code, ncutoffs):
     results = []
 
     for n in range(len(ncutoffs)):
-        #count_dict = dict.fromkeys(keys, 0.0)
         d = OrderedDict()
         d = d.fromkeys(keys, 0.0)
         for e_e, c in zip(rec_lig_element_combines, onion_counts[n]):
-            d[e_e] += c
+            lig_ele = e_e.split("_")[1]
+            d[e_e] += c / ligand_element_count[lig_ele]
 
         results += d.values()
 
@@ -177,8 +182,6 @@ if __name__ == "__main__":
         for i in range(size-1):
             inputs_list.append(inputs[int(i*aver_size):int((i+1)*aver_size)])
         inputs_list.append(inputs[(size-1)*aver_size:])
-
-        #print(inputs_list)
 
     else:
         inputs_list = None
@@ -217,13 +220,10 @@ if __name__ == "__main__":
         df.index = np.arange(df.shape[0])
 
     col_n = []
-    #col_n = ['pdbid']
     for i, n in enumerate(ele_pairs * len(n_cutoffs)):
         col_n.append(n+"_"+str(i))
-#    col_n.append('success')
     df.columns = col_n
-#    df['success'] = success
-    df.to_csv(str(rank)+"_"+out, sep=",", float_format="%.1f", index=True)
+    df.to_csv(str(rank)+"_"+out, sep=",", float_format="%.3f", index=True)
 
     print(rank, "Complete calculations. ")
 

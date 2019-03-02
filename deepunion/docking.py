@@ -27,9 +27,10 @@ class VinaDocking(object):
 
     def vina_config(self, receptor, ligand, outname,
                     n_cpus, exhaustiveness, center,
-                    boxsize=[30, 30, 30], logfile="log.log", n_modes=1):
+                    boxsize=[30, 30, 30], logfile="log.log",
+                    n_modes=1, config="vina.config"):
 
-        with open("vina.config", "w") as tofile:
+        with open(config, "w") as tofile:
 
             tofile.write("receptor = %s \n" % receptor)
             tofile.write("ligand = %s \n" % ligand)
@@ -50,7 +51,7 @@ class VinaDocking(object):
 
             tofile.write("log = %s \n" % logfile)
 
-        self.config = "vina.config"
+        self.config = config
 
         return self
 
@@ -124,10 +125,22 @@ def pdb2pdbqt(inp, out, keep_polarH=True):
     return None
 
 
-def main():
+def run_docking():
 
     d = """
     Perform molecular docking using AutoDock Vina.
+    
+    Input protein and ligand structures with pdb, pdbqt and mol2 file formats.
+    
+    Vina only accepts .pdbqt files, thus the input coordination files would be 
+    converted into pdbqt format. Only polar hydrogen atoms would be kept. 
+    
+    
+    Examples:
+    
+    python docking.py -rec receptor.pdb -lig ligand.mol2 -out output_vina.pdbqt
+    
+    
     """
 
     parser = argparse.ArgumentParser(description=d)
@@ -139,10 +152,11 @@ def main():
                         help="Input. Default is ligand.pdbqt. "
                              "The input ligand conformation.")
     parser.add_argument("-out", type=str, default="output_",
-                        help="Output. Optional. Default is output_"
+                        help="Output. Optional. Default is output_ \n"
                              "The prefix of the output")
     parser.add_argument("-cal_center", type=int, default=1,
-                        help="Input, optional. Whether calculate the binding pocket"
+                        help="Input, optional. Default is 1 . \n"
+                             "Whether calculate the binding pocket"
                              "automately.")
 
     args = parser.parse_args()
@@ -166,6 +180,7 @@ def main():
     docking.vina_config(rec+".pdbqt", lig+".pdbqt", args.out, 16, 32, xyz_c, [40, 40, 40], "log_vina.log", n_modes=20)
     docking.run_docking()
 
-#if "__name__" == __main__:
-    main()
+
+if __name__ == "__main__":
+    run_docking()
 

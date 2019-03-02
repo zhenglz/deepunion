@@ -199,7 +199,7 @@ class coordinatesPDB(object):
 
         Returns
         -------
-        coordinates : list, shape = [ N, 3]
+        coordinates : np.ndarray, shape = [ N, 3]
             The coordinates of selected pdb lines, N is the number of
             lines.
         """
@@ -207,7 +207,7 @@ class coordinatesPDB(object):
         atomCrd = list(map(lambda x: [float(x[30:38].strip()),float(x[38:46].strip()),
                                       float(x[46:54].strip())],lines))
 
-        return atomCrd
+        return np.array(atomCrd)
 
     def getAtomCrdByNdx(self, singleFramePDB, atomNdx=['1',]):
         """Input a pdb file and the atom index, return the crd of the atoms
