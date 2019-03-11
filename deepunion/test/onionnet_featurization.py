@@ -7,7 +7,6 @@ import itertools
 import sys
 from collections import OrderedDict
 from mpi4py import MPI
-import time
 
 
 class AtomTypeCounts(object):
@@ -103,16 +102,15 @@ class AtomTypeCounts(object):
         return self
 
 
-def generate_features(complex_fn, lig_code, ncutoffs, all_elements):
+def generate_features(complex_fn, lig_code, ncutoffs):
 
-    # A list of different types of molecules
-    #all_elements = ["H", "C", "O", "N", "P", "S", "Br", "Du"]
-    #keys = ["_".join(x) for x in list(itertools.product(all_elements, all_elements))]
+    all_elements = ["H", "C", "O", "N", "P", "S", "Br", "Du"]
+    keys = ["_".join(x) for x in list(itertools.product(all_elements, all_elements))]
 
     cplx = AtomTypeCounts(complex_fn, lig_code)
     cplx.parsePDB(rec_sele="protein", lig_sele="resname %s" % lig_code)
 
-    '''lig = cplx.lig_ele
+    lig = cplx.lig_ele
     rec = cplx.rec_ele
 
     new_lig, new_rec = [], []
@@ -125,15 +123,13 @@ def generate_features(complex_fn, lig_code, ncutoffs, all_elements):
         if e not in all_elements:
             new_rec.append("Du")
         else:
-            new_rec.append(e)'''
-    # element types of all atoms in the proteins and ligands
-    new_lig = [x if x in all_elements else "Du" for x in cplx.lig_ele]
-    new_rec = [x if x in all_elements else "Du" for x in cplx.rec_ele]
+            new_rec.append(e)
 
     rec_lig_element_combines = ["_".join(x) for x in list(itertools.product(new_rec, new_lig))]
     cplx.distance_pairs()
 
     counts = []
+
     onion_counts = []
 
     for i, cutoff in enumerate(ncutoffs):
@@ -157,84 +153,28 @@ def generate_features(complex_fn, lig_code, ncutoffs, all_elements):
 
         results += d.values()
 
-    return results
+    return results, keys
 
 
 if __name__ == "__main__":
-
-    start = time.time()
-    print("Start Now ... ")
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
-    size = comm.Get_size()
-
-    # A list of different types of molecules
-    all_elements = ["H", "C", "O", "N", "P", "S", "Br", "Du"]
-    keys = ["_".join(x) for x in list(itertools.product(all_elements, all_elements))]
-
-    if rank == 0:
-        if len(sys.argv) < 3:
-            print("Usage: python gen_feature.py input.dat output.csv ")
-            sys.exit(0)
-
-        with open(sys.argv[1]) as lines:
-            lines = [x for x in lines if ("#" not in x and len(x.split()) >= 2)].copy()
-            inputs = [x.split()[0] for x in lines]
-
-        inputs_list = []
-        aver_size = int(len(inputs) / size)
-        print(size, aver_size)
-        for i in range(size-1):
-            inputs_list.append(inputs[int(i*aver_size):int((i+1)*aver_size)])
-        inputs_list.append(inputs[(size-1)*aver_size:])
-
-        #print(inputs_list)
-
-    else:
-        inputs_list = None
-
-    inputs = comm.scatter(inputs_list, root=0)
-    #print(rank, inputs)
-
+    #print("Start Now ... ")
+    inp = sys.argv[1]
+    lig = "LIG"
     out = sys.argv[2]
-    n_cutoffs = np.linspace(0.1, 3.1, 60)
+    n_cutoffs = np.linspace(0.1, 3.05, 60)
 
     results = []
     ele_pairs =[]
-    success = []
 
-    for p in inputs:
-        fn = p
-        lig_code = "LIG UNK"
-
-        try:
-            r = generate_features(fn, lig_code, n_cutoffs, all_elements)
-            results.append(r)
-            success.append(1.)
-            print(rank, fn)
-
-        except:
-            #r = results[-1]
-            r = ['fn', ] + list([0., ]*3840) + [0.0, ]
-            results.append(r)
-            success.append(0.)
-            print("Not successful. ", fn)
-
-    df = pd.DataFrame(results)
     try:
-        df.index = inputs
+        results, ele_pairs = generate_features(inp, lig, n_cutoffs)
+
     except:
-        df.index = np.arange(df.shape[0])
+        #r = results[-1]
+        results = list([0., ]*3840) + [0.0, ]
 
-    col_n = []
-    #col_n = ['pdbid']
-    for i, n in enumerate(keys * len(n_cutoffs)):
-        col_n.append(n+"_"+str(i))
-#    col_n.append('success')
-    df.columns = col_n
-#    df['success'] = success
-    df.to_csv(str(rank)+"_"+out, sep=",", float_format="%.1f", index=True)
-
-    print(rank, "Complete calculations. ")
-    print(time.time() - start)
-
+    #results = [inp, ] + results
+    print(len(results))
+    with open(out, "w") as tofile:
+        l = inp+","+",".join(format(x, ".3f") for x in results)+"\n"
+        tofile.write(l)

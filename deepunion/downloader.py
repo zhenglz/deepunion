@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from pubchempy import get_compounds
+from bs4 import BeautifulSoup
+import subprocess as sp
+import os
+import time
+from random import random
+from bs4 import BeautifulSoup as Soup
+import requests
 
 
 class PubChemDownloader(object):
@@ -109,3 +116,82 @@ class PubChemDownloader(object):
             return compound.cid
         else:
             return ""
+
+
+class ZINCDownloader(object):
+
+    def __init__(self):
+        pass
+
+    def crawl_smiles(self, url):
+        try:
+            #url = "http://zinc.docking.org/substance/%s" % zinc_id
+            r = requests.get(url)
+            soup = Soup(r.text)
+
+            if len(soup.find_all('input')) >= 4:
+                return soup.find_all('input')[3]['value']
+            else:
+                return ""
+
+        except (ConnectionError, UnicodeDecodeError) as e:
+            return ""
+
+    def get_by_id(self, zinc_id):
+
+        if not os.path.exists(zinc_id):
+
+            try:
+                cmd = "wget http://zinc.docking.org/substance/%s" % zinc_id
+                job = sp.Popen(cmd, shell=True)
+                job.communicate()
+            except ConnectionError:
+                try:
+                    url = "http://zinc.docking.org/substance/%s" % zinc_id
+                    return self.crawl_smiles(url)
+
+                except (ConnectionError, UnicodeDecodeError) as e:
+                    return ""
+
+        if os.path.exists(zinc_id):
+            try:
+                soup = BeautifulSoup(open(zinc_id))
+                if len(soup.find_all('input')) >= 4:
+                    s = soup.find_all('input')[3]['value']
+                else:
+                    try:
+                        url = "http://zinc.docking.org/substance/%s" % zinc_id
+                        s = self.crawl_smiles(url)
+                    except(ConnectionError, UnicodeDecodeError):
+                        s = ""
+
+                return s
+
+            except UnicodeDecodeError:
+                try:
+                    url = "http://zinc.docking.org/substance/%s" % zinc_id
+
+                    return self.crawl_smiles(url)
+                except (UnicodeDecodeError, ConnectionError) as e:
+                    return ""
+
+        else:
+            return ""
+
+    def get_by_ids(self, zinc_ids, max_sleep=4.0, verbose=True):
+
+        sleep_time = max_sleep * random()
+        time.sleep(sleep_time)
+
+        smiles = []
+        for zid in zinc_ids:
+            try:
+                s = self.get_by_id(zid)
+                if verbose:
+                    print(s, zid)
+            except RuntimeError:
+                s = ""
+            smiles.append(s)
+
+        return smiles
+

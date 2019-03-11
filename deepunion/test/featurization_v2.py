@@ -5,9 +5,9 @@ import pandas as pd
 import mdtraj as mt
 import itertools
 import sys
-from collections import OrderedDict
 from mpi4py import MPI
 import time
+from collections import OrderedDict
 
 
 class AtomTypeCounts(object):
@@ -98,61 +98,50 @@ class AtomTypeCounts(object):
 
     def cutoff_count(self, cutoff=0.35):
 
-        self.counts_ = (self.distance_matrix_ <= cutoff) * 1.0
+        c = (self.distance_matrix_ <= cutoff) * 1.0
+        self.counts_ = c
 
-        return self
+        return c
 
 
-def generate_features(complex_fn, lig_code, ncutoffs, all_elements):
+def sum_contacts(all_elements, ele_combinations, counts):
+    pass
 
-    # A list of different types of molecules
-    #all_elements = ["H", "C", "O", "N", "P", "S", "Br", "Du"]
-    #keys = ["_".join(x) for x in list(itertools.product(all_elements, all_elements))]
 
+def generate_features(complex_fn, lig_code, ncutoffs, all_elements, keys):
+    len_elements = len(all_elements)
+
+    # define a pdb parser and calculate the distance matrix
     cplx = AtomTypeCounts(complex_fn, lig_code)
     cplx.parsePDB(rec_sele="protein", lig_sele="resname %s" % lig_code)
 
-    '''lig = cplx.lig_ele
-    rec = cplx.rec_ele
-
-    new_lig, new_rec = [], []
-    for e in lig:
-        if e not in all_elements:
-            new_lig.append("Du")
-        else:
-            new_lig.append(e)
-    for e in rec:
-        if e not in all_elements:
-            new_rec.append("Du")
-        else:
-            new_rec.append(e)'''
     # element types of all atoms in the proteins and ligands
     new_lig = [x if x in all_elements else "Du" for x in cplx.lig_ele]
     new_rec = [x if x in all_elements else "Du" for x in cplx.rec_ele]
 
-    rec_lig_element_combines = ["_".join(x) for x in list(itertools.product(new_rec, new_lig))]
+    # combinations of the element types for each atoms
+    rec_lig_ele_combines = ["_".join(x) for x in list(itertools.product(new_rec, new_lig))]
     cplx.distance_pairs()
 
     counts = []
+    # the shape of onion_counts is 60 * 64
     onion_counts = []
 
     for i, cutoff in enumerate(ncutoffs):
-        cplx.cutoff_count(cutoff)
-
+        c = cplx.cutoff_count(cutoff)
+        #print("COUNTS", c)
         if i == 0:
-            onion_counts.append(cplx.counts_)
+            onion_counts.append(c)
         else:
-            onion_counts.append(cplx.counts_ - counts[-1])
+            onion_counts.append(c - counts)
 
-        counts.append(cplx.counts_)
+        counts = c[:]
 
     results = []
-
     for n in range(len(ncutoffs)):
-        #count_dict = dict.fromkeys(keys, 0.0)
         d = OrderedDict()
         d = d.fromkeys(keys, 0.0)
-        for e_e, c in zip(rec_lig_element_combines, onion_counts[n]):
+        for e_e, c in zip(rec_lig_ele_combines, onion_counts[n]):
             d[e_e] += c
 
         results += d.values()
@@ -161,17 +150,18 @@ def generate_features(complex_fn, lig_code, ncutoffs, all_elements):
 
 
 if __name__ == "__main__":
-
-    start = time.time()
     print("Start Now ... ")
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
 
+    start = time.time()
+
     # A list of different types of molecules
     all_elements = ["H", "C", "O", "N", "P", "S", "Br", "Du"]
     keys = ["_".join(x) for x in list(itertools.product(all_elements, all_elements))]
 
+    # preprocessing the list of files for analysis
     if rank == 0:
         if len(sys.argv) < 3:
             print("Usage: python gen_feature.py input.dat output.csv ")
@@ -193,14 +183,16 @@ if __name__ == "__main__":
     else:
         inputs_list = None
 
+    # scatter the list to each rank
     inputs = comm.scatter(inputs_list, root=0)
-    #print(rank, inputs)
 
+    # define the output file name
     out = sys.argv[2]
-    n_cutoffs = np.linspace(0.1, 3.1, 60)
+
+    # define the different distance cutoff range
+    n_cutoffs = np.linspace(0.1, 3.05, 60)
 
     results = []
-    ele_pairs =[]
     success = []
 
     for p in inputs:
@@ -208,14 +200,15 @@ if __name__ == "__main__":
         lig_code = "LIG UNK"
 
         try:
-            r = generate_features(fn, lig_code, n_cutoffs, all_elements)
+            # do the calculations
+            r = generate_features(fn, lig_code, n_cutoffs, all_elements, keys)
             results.append(r)
             success.append(1.)
             print(rank, fn)
-
+            print("Successful. ", fn)
         except:
             #r = results[-1]
-            r = ['fn', ] + list([0., ]*3840) + [0.0, ]
+            r = list([0., ]* len(all_elements)*len(n_cutoffs))
             results.append(r)
             success.append(0.)
             print("Not successful. ", fn)
@@ -226,15 +219,15 @@ if __name__ == "__main__":
     except:
         df.index = np.arange(df.shape[0])
 
-    col_n = []
-    #col_n = ['pdbid']
-    for i, n in enumerate(keys * len(n_cutoffs)):
-        col_n.append(n+"_"+str(i))
-#    col_n.append('success')
-    df.columns = col_n
-#    df['success'] = success
-    df.to_csv(str(rank)+"_"+out, sep=",", float_format="%.1f", index=True)
+    #col_n = []
+    #for i, n in enumerate(keys * len(n_cutoffs)):
+    #    col_n.append(n+"_"+str(i))
+    #    col_n.append('success')
+    #df.columns = col_n
+    #    df['success'] = success
+    df.to_csv(str(rank)+"_"+out, sep=",", float_format="%.1f", index=True, columns=False)
 
-    print(rank, "Complete calculations. ")
     print(time.time() - start)
+    print(rank, "Complete calculations. ")
+
 

@@ -39,7 +39,7 @@ def lig_name_change(lig_in, lig_out, lig_code):
 
 def main():
 
-    inputs = [x.split()[0] for x in open(sys.argv[1]) .readlines() if "#" not in x]
+    inputs = [x.split()[0] for x in open(sys.argv[1]).readlines() if "#" not in x]
     print(inputs)
     for p in inputs:
 
