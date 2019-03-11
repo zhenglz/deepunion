@@ -71,24 +71,24 @@ def create_model(input_size, lr=0.0001):
 
     model.add(tf.keras.layers.Flatten())
 
-    model.add(tf.keras.layers.Dense(2000, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
+    model.add(tf.keras.layers.Dense(200, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
 
-    model.add(tf.keras.layers.Dense(1000,
+    model.add(tf.keras.layers.Dense(100,
                                     kernel_regularizer=tf.keras.regularizers.l2(0.01),))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
 
-    model.add(tf.keras.layers.Dense(400, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
-    model.add(tf.keras.layers.Activation("relu"))
-    model.add(tf.keras.layers.BatchNormalization())
-
-    model.add(tf.keras.layers.Dense(100, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
-    model.add(tf.keras.layers.Activation("relu"))
-    model.add(tf.keras.layers.BatchNormalization())
-
     model.add(tf.keras.layers.Dense(40, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.BatchNormalization())
+
+    model.add(tf.keras.layers.Dense(20, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.BatchNormalization())
+
+    model.add(tf.keras.layers.Dense(10, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
 
@@ -102,6 +102,13 @@ def create_model(input_size, lr=0.0001):
 
 
 if __name__ == "__main__":
+    d = """Train or predict the features based on protein-ligand complexes.
+    
+    Examples:
+    python CNN_model_keras.py -fn1 docked_training_features_12ksamples_rmsd_lessthan3a.csv 
+           -fn2 training_pka_features.csv -history hist.csv -pKa_col pKa_mimic pKa -train 1
+           
+    """
 
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("-fn1", type=str, default="features_1.csv",
@@ -121,10 +128,13 @@ if __name__ == "__main__":
     parser.add_argument("-out", type=str, default="predicted_pKa.csv",
                         help="Output. The predicted pKa values file name to save. ")
     parser.add_argument("-lr_init", type=float, default=0.001,
-                        help="Output. The logger file name to save. ")
+                        help="Input. Default is 0.001. The initial learning rate. ")
+    parser.add_argument("-epochs", type=int, default=100,
+                        help="Input. Default is 100. The number of epochs to train. ")
     parser.add_argument("-train", type=int, default=1,
-                        help="Input. Whether train or predict. \n"
+                        help="Input. Default is 1. Whether train or predict. \n"
                              "1: train, 0: predict. ")
+
 
     args = parser.parse_args()
 
@@ -200,14 +210,18 @@ if __name__ == "__main__":
 
         model = tf.keras.models.load_model(args.model,
                                            custom_objects={'RMSE': RMSE,
-                                                           'pcc': pcc,
+                                                           'PCC': PCC,
                                                            'PCC_RMSE':PCC_RMSE})
 
         ypred = pd.DataFrame()
         ypred['pKa_predicted'] = model.predict(Xs).ravel()
-        ypred.to_csv(args.out, header=True, index=True, float_format="%.3f")
-
         if do_eval:
             print("PCC : %.3f" % pcc(ypred['pKa_predicted'].values, ytrue))
             print("RMSE: %.3f" % rmse(ypred['pKa_predicted'].values, ytrue))
+
+            ypred['pKa_true'] = ytrue
+
+        ypred.to_csv(args.out, header=True, index=True, float_format="%.3f")
+
+
 
