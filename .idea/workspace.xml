@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="050feb0a-9d84-4d89-be82-82dd8d075ca5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deepunion/test/CNN_model_keras.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/CNN_model_keras.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion/test/MLPRegression_Onehot_100Length.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion/test/docking_MPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/docking_MPI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -89,8 +85,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/deepunion/test/CNN_model_keras.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1660">
-              <caret line="97" column="68" lean-forward="true" selection-start-line="97" selection-start-column="68" selection-end-line="97" selection-end-column="68" />
+            <state relative-caret-position="346">
+              <caret line="213" lean-forward="true" selection-start-line="213" selection-end-line="213" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -293,7 +289,14 @@
       <option name="project" value="LOCAL" />
       <updated>1551505279891</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add a DNN model">
+      <created>1552312094052</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1552312094052</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -623,8 +626,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/test/CNN_model_keras.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1660">
-          <caret line="97" column="68" lean-forward="true" selection-start-line="97" selection-start-column="68" selection-end-line="97" selection-end-column="68" />
+        <state relative-caret-position="346">
+          <caret line="213" lean-forward="true" selection-start-line="213" selection-end-line="213" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>

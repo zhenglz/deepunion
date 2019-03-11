@@ -211,4 +211,3 @@ if __name__ == "__main__":
             print("PCC : %.3f" % pcc(ypred['pKa_predicted'].values, ytrue))
             print("RMSE: %.3f" % rmse(ypred['pKa_predicted'].values, ytrue))
 
-
