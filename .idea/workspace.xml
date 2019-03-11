@@ -2,19 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="050feb0a-9d84-4d89-be82-82dd8d075ca5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/deepunion/test/bit_features.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deepunion/test/download_ZINC.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deepunion/test/featurization_v2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deepunion/test/gen_protein_seq.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deepunion/test/onionnet_featurization.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deepunion/test/torch_CNN.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion.egg-info/PKG-INFO" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion.egg-info/PKG-INFO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion/docking.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/docking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion/downloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/downloader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion/test/cat_rec_lig.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/cat_rec_lig.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/test/CNN_model_keras.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/CNN_model_keras.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/test/MLPRegression_Onehot_100Length.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/test/docking_MPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/docking_MPI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion/test/identify_best_pose.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/identify_best_pose.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,18 +16,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2465">
-              <caret line="152" selection-start-line="152" selection-end-line="157" selection-end-column="29" />
-              <folding>
-                <element signature="e#23#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -94,13 +74,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/downloader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="129" column="31" lean-forward="true" selection-start-line="129" selection-start-column="31" selection-end-line="129" selection-end-column="31" />
+            <state relative-caret-position="363">
+              <caret line="122" column="23" selection-start-line="122" selection-start-column="23" selection-end-line="122" selection-end-column="23" />
               <folding>
                 <element signature="e#25#60#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/CNN_model_keras.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="346">
+              <caret line="178" column="74" selection-start-line="178" selection-start-column="74" selection-end-line="178" selection-end-column="74" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -109,7 +101,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/download_ZINC.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
+            <state relative-caret-position="153">
               <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
@@ -186,11 +178,13 @@
         <option value="$PROJECT_DIR$/deepunion/test/featurization_v2.py" />
         <option value="$PROJECT_DIR$/deepunion/test/download_ZINC.py" />
         <option value="$PROJECT_DIR$/deepunion/downloader.py" />
+        <option value="$PROJECT_DIR$/deepunion/test/CNN_model_keras.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1362" />
+    <option name="y" value="23" />
+    <option name="width" value="1366" />
     <option name="height" value="705" />
   </component>
   <component name="ProjectView">
@@ -198,6 +192,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -220,7 +215,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -303,9 +297,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1362" height="705" extended-state="0" />
+    <frame x="0" y="23" width="1366" height="705" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.152871" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15241636" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection Results" order="0" sideWeight="0.49968335" weight="0.3293011" />
@@ -317,8 +312,8 @@
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.1961223" side_tool="true" visible="true" weight="0.20785597" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.8038777" visible="true" weight="0.20785597" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.19702603" side_tool="true" visible="true" weight="0.20785597" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.802974" visible="true" weight="0.20785597" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49841672" weight="0.3293011" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -586,6 +581,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/download_ZINC.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/nma.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2686">
@@ -606,22 +611,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/test/download_ZINC.py">
+    <entry file="file://$PROJECT_DIR$/deepunion/downloader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+        <state relative-caret-position="363">
+          <caret line="122" column="23" selection-start-line="122" selection-start-column="23" selection-end-line="122" selection-end-column="23" />
           <folding>
-            <element signature="e#0#32#0" expanded="true" />
+            <element signature="e#25#60#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/downloader.py">
+    <entry file="file://$PROJECT_DIR$/deepunion/test/CNN_model_keras.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="129" column="31" lean-forward="true" selection-start-line="129" selection-start-column="31" selection-end-line="129" selection-end-column="31" />
+        <state relative-caret-position="346">
+          <caret line="178" column="74" selection-start-line="178" selection-start-column="74" selection-end-line="178" selection-end-column="74" />
           <folding>
-            <element signature="e#25#60#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>

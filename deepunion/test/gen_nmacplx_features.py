@@ -178,7 +178,7 @@ if __name__ == "__main__":
             sys.exit(0)
 
         with open(sys.argv[1]) as lines:
-            lines = [x for x in lines if ("#" not in x and len(x.split()) >= 2)].copy()
+            lines = [x for x in lines if ("#" not in x and len(x.split()) >= 1)].copy()
             inputs = [x.split()[0] for x in lines]
 
         inputs_list = []
@@ -215,9 +215,9 @@ if __name__ == "__main__":
 
         except:
             #r = results[-1]
-            r = ['fn', ] + list([0., ]*3840) + [0.0, ]
+            r = list([0., ]*3840) 
             results.append(r)
-            success.append(0.)
+            #success.append(0.)
             print("Not successful. ", fn)
 
     df = pd.DataFrame(results)

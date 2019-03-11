@@ -65,7 +65,7 @@ def do_docking():
                     # job = sp.Popen("awk '$1 ~ /ATOM/ {print $0}' temp.pdbqt > %s.pdbqt" % rec, shell=True)
                     # job.communicate()
                     vina = docking.VinaDocking()
-                    vina.vina_config(rec, lig + ".pdbqt", out, 32, 8, xyz_c, [30, 30, 30], log,
+                    vina.vina_config(rec, lig + ".pdbqt", out, 16, 8, xyz_c, [20, 20, 20], log,
                                      n_modes=20, config=config)
                     vina.run_docking()
 
