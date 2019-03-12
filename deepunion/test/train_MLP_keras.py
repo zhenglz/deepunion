@@ -11,7 +11,6 @@ from scipy import stats
 
 
 def rmse(y_true, y_pred):
-
     dev = np.square(y_true.ravel() - y_pred.ravel())
     return np.sqrt(np.sum(dev) / y_true.shape[0])
 
@@ -22,7 +21,6 @@ def pcc(y_true, y_pred):
 
 
 def PCC_RMSE(y_true, y_pred):
-
     alpha = 0.7
 
     fsp = y_pred - tf.keras.backend.mean(y_pred)
@@ -37,7 +35,7 @@ def PCC_RMSE(y_true, y_pred):
 
     pcc = tf.where(tf.is_nan(pcc), 0.25, pcc)
 
-    return alpha * pcc + (1-alpha) * rmse
+    return alpha * pcc + (1 - alpha) * rmse
 
 
 def RMSE(y_true, y_pred):
@@ -45,7 +43,6 @@ def RMSE(y_true, y_pred):
 
 
 def PCC(y_true, y_pred):
-
     fsp = y_pred - tf.keras.backend.mean(y_pred)
     fst = y_true - tf.keras.backend.mean(y_true)
 
@@ -56,7 +53,6 @@ def PCC(y_true, y_pred):
 
 
 def create_model(input_size, lr=0.0001):
-
     model = tf.keras.Sequential()
 
     model.add(tf.keras.layers.Conv2D(128, 4, 1, input_shape=input_size))
@@ -70,28 +66,28 @@ def create_model(input_size, lr=0.0001):
 
     model.add(tf.keras.layers.Flatten())
 
-    model.add(tf.keras.layers.Dense(200, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
+    model.add(tf.keras.layers.Dense(200, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
 
     model.add(tf.keras.layers.Dense(100,
-                                    kernel_regularizer=tf.keras.regularizers.l2(0.01),))
+                                    kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
 
-    model.add(tf.keras.layers.Dense(40, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
+    model.add(tf.keras.layers.Dense(40, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
 
-    model.add(tf.keras.layers.Dense(20, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
+    model.add(tf.keras.layers.Dense(20, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
 
-    model.add(tf.keras.layers.Dense(10, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
+    model.add(tf.keras.layers.Dense(10, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
 
-    model.add(tf.keras.layers.Dense(1, kernel_regularizer=tf.keras.regularizers.l2(0.01),))
+    model.add(tf.keras.layers.Dense(1, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
     model.add(tf.keras.layers.Activation("relu"))
 
     sgd = tf.keras.optimizers.SGD(lr=lr, momentum=0.9, decay=1e-6, )
@@ -102,14 +98,14 @@ def create_model(input_size, lr=0.0001):
 
 if __name__ == "__main__":
     d = """Train or predict the features based on protein-ligand complexes.
-    
+
     Examples:
     python CNN_model_keras.py -fn1 docked_training_features_12ksamples_rmsd_lessthan3a.csv 
            -fn2 training_pka_features.csv -history hist.csv -pKa_col pKa_mimic pKa -train 1
-           
+
     """
 
-    parser = argparse.ArgumentParser(description="")
+    parser = argparse.ArgumentParser(description=d, formatter_class=RawTextHelpFormatter)
     parser.add_argument("-fn1", type=str, default="features_1.csv",
                         help="Input. The docked cplx feature set.")
     parser.add_argument("-fn2", type=str, default="features_2.csv",
@@ -133,7 +129,10 @@ if __name__ == "__main__":
     parser.add_argument("-train", type=int, default=1,
                         help="Input. Default is 1. Whether train or predict. \n"
                              "1: train, 0: predict. ")
-
+    parser.add_argument("-n_features", default=3840, type=int,
+                        help="Input. Default is 1000. Number of features in the input dataset.")
+    parser.add_argument("-reshape", type=int, default=[64, 60, 1], nargs="+",
+                        help="Input. Default is 64 60 1. Reshape the dataset. ")
 
     args = parser.parse_args()
 
@@ -147,9 +146,10 @@ if __name__ == "__main__":
 
     if os.path.exists(args.fn1):
         df = pd.read_csv(args.fn1, index_col=0, header=0).dropna()
+        print("DataFrame Shape", df.shape)
         if args.train:
             y = df[args.pKa_col[0]].values
-        X = df.values[:, :3840]
+        X = df.values[:, :args.n_features]
 
         if args.pKa_col[0] in df.columns.values:
             ytrue = df[args.pKa_col[0]].values
@@ -158,7 +158,7 @@ if __name__ == "__main__":
 
     if os.path.exists(args.fn2):
         df2 = pd.read_csv(args.fn2, index_col=0, header=0).dropna()
-        X2 = df2.values[:, :3840]
+        X2 = df2.values[:, :args.n_features]
         if args.train:
             y2 = df2[args.pKa_col[-1]].values
             y = list(y) + list(y2)
@@ -183,24 +183,26 @@ if __name__ == "__main__":
 
         Xtrain, Xtest, ytrain, ytest = model_selection.train_test_split(Xs, y, test_size=0.2)
         print("Train and test split")
-        Xtrain = Xtrain.reshape((-1, 64, 60, 1))
-        model = create_model((64, 60, 1), lr=args.lr_init)
+        Xtrain = Xtrain.reshape((-1, args.reshape[0], args.reshape[1], args.reshape[2]))
+        model = create_model((args.reshape[0], args.reshape[1], args.reshape[2]), lr=args.lr_init)
 
         # callbacks
-        stop = tf.keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=0.001, patience=20, verbose=1, mode='auto',)
+        stop = tf.keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=0.001, patience=20, verbose=1,
+                                                mode='auto', )
         logger = tf.keras.callbacks.CSVLogger(args.log, separator=',', append=False)
-        bestmodel = tf.keras.callbacks.ModelCheckpoint(filepath="bestmodel_"+args.model, verbose=1, save_best_only=True)
+        bestmodel = tf.keras.callbacks.ModelCheckpoint(filepath="bestmodel_" + args.model, verbose=1,
+                                                       save_best_only=True)
 
         # train the model
-        history = model.fit(Xtrain, ytrain, validation_data=(Xtest.reshape(-1, 64, 60, 1), ytest),
+        history = model.fit(Xtrain, ytrain, validation_data=(Xtest.reshape(-1, args.reshape[0], args.reshape[1], args.reshape[2]), ytest),
                             batch_size=64, epochs=200, verbose=1, callbacks=[stop, logger, bestmodel])
 
         model.save(args.model)
         print("Save model. ")
 
-        #np_hist = np.array(history)
-        #np.savetxt(args.history, np_hist, delimiter=",", fmt="%.4f")
-        #print("Save history.")
+        # np_hist = np.array(history)
+        # np.savetxt(args.history, np_hist, delimiter=",", fmt="%.4f")
+        # print("Save history.")
 
     else:
         scaler = joblib.load(args.scaler)
@@ -210,7 +212,7 @@ if __name__ == "__main__":
         model = tf.keras.models.load_model(args.model,
                                            custom_objects={'RMSE': RMSE,
                                                            'PCC': PCC,
-                                                           'PCC_RMSE':PCC_RMSE})
+                                                           'PCC_RMSE': PCC_RMSE})
 
         ypred = pd.DataFrame()
         ypred['pKa_predicted'] = model.predict(Xs).ravel()
