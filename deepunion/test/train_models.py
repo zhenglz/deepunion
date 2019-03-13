@@ -190,12 +190,13 @@ if __name__ == "__main__":
 
     for fn in args.fn1:
         if os.path.exists(fn):
+            #print(fn)
             df = pd.read_csv(fn, index_col=0, header=0).dropna()
             if args.remove_H:
                 df = remove_all_hydrogens(df, args.n_features)
 
-            print("DataFrame Shape", df.shape)
-            if args.train:
+            print("DataFrame Shape", df.shape, fn)
+            if args.train > 0:
                 if args.pKa_col[0] in df.columns.values:
                     y = y + list(df[args.pKa_col[0]].values)
                 else:
@@ -212,12 +213,15 @@ if __name__ == "__main__":
 
     for fn in args.fn2:
         if os.path.exists(fn):
+
             df = pd.read_csv(fn, index_col=0, header=0).dropna()
+            print("DataFrame Shape", df.shape, fn)
+
             if args.remove_H:
                 df = remove_all_hydrogens(df, args.n_features)
 
             X = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
-            if args.train:
+            if args.train > 0:
                 y = y + list(df[args.pKa_col[-1]].values)
 
             if args.pKa_col[-1] in df.columns.values and args.train == 0:
@@ -238,17 +242,12 @@ if __name__ == "__main__":
             if Xval.shape[0] == 0:
                 Xval = df.values[:, :args.n_features]
             else:
-                Xval = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
+                Xval = np.concatenate((Xval, df.values[:, :args.n_features]), axis=0)
 
-            if args.train:
+            if args.train > 0:
                 yval = yval + list(df[col_names[i]].values)
 
-            #if args.pKa_col[-1] in df.columns.values and args.train == 0:
-            #    ytrue = list(ytrue) + df[col_names[i]].values
-
-            #    do_eval = True
-
-
+    print(X.shape, len(y), Xval.shape, len(yval))
     print("DataSet Loaded")
 
     if args.train > 0:
