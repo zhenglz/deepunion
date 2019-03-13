@@ -166,6 +166,8 @@ if __name__ == "__main__":
                         help="Input. Default is 0.001. The initial learning rate. ")
     parser.add_argument("-epochs", type=int, default=100,
                         help="Input. Default is 100. The number of epochs to train. ")
+    parser.add_argument("-batch", type=int, default=128,
+                        help="Input. Default is 128. The number of batch size to train. ")
     parser.add_argument("-train", type=int, default=1,
                         help="Input. Default is 1. Whether train or predict. \n"
                              "1: train, 0: predict. ")
@@ -182,7 +184,7 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit(0)
 
-    X, y = None, None
+    X, y = np.array([]), []
     do_eval = False
     ytrue = []
 
@@ -198,7 +200,10 @@ if __name__ == "__main__":
                     y = y + list(df[args.pKa_col[0]].values)
                 else:
                     print("No such column %s in input file. " % args.pKa_col[0])
-            X = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
+            if X.shape[0] == 0:
+                X = df.values[:, :args.n_features]
+            else:
+                X = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
 
             if args.pKa_col[0] in df.columns.values and args.train == 0:
                 ytrue = ytrue + list(df[args.pKa_col[0]].values)
@@ -221,6 +226,8 @@ if __name__ == "__main__":
                 do_eval = True
 
     col_names = ['pKa', 'pKa_relu']
+    Xval, yval = np.array([]), []
+
     for i, fn in enumerate(args.fn_val):
 
         if os.path.exists(fn):
@@ -228,14 +235,18 @@ if __name__ == "__main__":
             if args.remove_H:
                 df = remove_all_hydrogens(df, args.n_features)
 
-            X = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
+            if Xval.shape[0] == 0:
+                Xval = df.values[:, :args.n_features]
+            else:
+                Xval = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
+
             if args.train:
-                y = y + list(df[col_names[i]].values)
+                yval = yval + list(df[col_names[i]].values)
 
-            if args.pKa_col[-1] in df.columns.values and args.train == 0:
-                ytrue = list(ytrue) + df[col_names[i]].values
+            #if args.pKa_col[-1] in df.columns.values and args.train == 0:
+            #    ytrue = list(ytrue) + df[col_names[i]].values
 
-                do_eval = True
+            #    do_eval = True
 
 
     print("DataSet Loaded")
@@ -247,9 +258,9 @@ if __name__ == "__main__":
         joblib.dump(scaler, args.scaler)
         print("DataSet Scaled")
 
-        Xtrain, Xtest, ytrain, ytest = model_selection.train_test_split(Xs, y, test_size=0.2)
-        print("Train and test split")
-        Xtrain = Xtrain.reshape((-1, args.reshape[0], args.reshape[1], args.reshape[2]))
+        #Xtrain, Xtest, ytrain, ytest = model_selection.train_test_split(Xs, y, test_size=0.2)
+        #print("Train and test split")
+        Xtrain = Xs.reshape((-1, args.reshape[0], args.reshape[1], args.reshape[2]))
         model = create_model((args.reshape[0], args.reshape[1], args.reshape[2]), lr=args.lr_init)
 
         # callbacks
@@ -260,8 +271,8 @@ if __name__ == "__main__":
                                                        save_best_only=True)
 
         # train the model
-        history = model.fit(Xtrain, ytrain, validation_data=(Xtest.reshape(-1, args.reshape[0], args.reshape[1], args.reshape[2]), ytest),
-                            batch_size=64, epochs=200, verbose=1, callbacks=[stop, logger, bestmodel])
+        history = model.fit(Xtrain, y, validation_data=(Xval.reshape(-1, args.reshape[0], args.reshape[1], args.reshape[2]), yval),
+                            batch_size=args.batch, epochs=args.epochs, verbose=1, callbacks=[stop, logger, bestmodel])
 
         model.save(args.model)
         print("Save model. ")
@@ -289,6 +300,4 @@ if __name__ == "__main__":
             ypred['pKa_true'] = ytrue
 
         ypred.to_csv(args.out, header=True, index=True, float_format="%.3f")
-
-
 
