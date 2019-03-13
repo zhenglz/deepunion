@@ -52,6 +52,44 @@ def PCC(y_true, y_pred):
     return tf.keras.backend.mean(fsp * fst) / (devP * devT)
 
 
+def remove_shell_features(dat, shell_index, features_n=64):
+
+    df = dat.copy()
+
+    start = shell_index * features_n
+    end = start + features_n
+
+    zeroes = np.zeros((df.shape[0], features_n))
+
+    df[:, start:end] = zeroes
+
+    return df
+
+
+def remove_atomtype_features(dat, feature_index, shells_n=60):
+
+    df = dat.copy()
+
+    for i in range(shells_n):
+        ndx = i * 64 + feature_index
+
+        zeroes = np.zeros(df.shape[0])
+        df[:, ndx] = zeroes
+
+    return df
+
+
+def remove_all_hydrogens(dat, n_features):
+    df = dat.copy()
+
+    for f in df.columns.values[:n_features]:
+        if "H_" in f or "_H_" in f:
+            v = np.zeros(df.shape[0])
+            df[f] = v
+
+    return df
+
+
 def create_model(input_size, lr=0.0001):
     model = tf.keras.Sequential()
 
@@ -106,9 +144,9 @@ if __name__ == "__main__":
     """
 
     parser = argparse.ArgumentParser(description=d, formatter_class=RawTextHelpFormatter)
-    parser.add_argument("-fn1", type=str, default="features_1.csv",
+    parser.add_argument("-fn1", type=str, default=["features_1.csv", ], nargs="+",
                         help="Input. The docked cplx feature set.")
-    parser.add_argument("-fn2", type=str, default="features_2.csv",
+    parser.add_argument("-fn2", type=str, default=["features_2.csv", ], nargs="+",
                         help="Input. The PDBBind feature set.")
     parser.add_argument("-history", type=str, default="history.csv",
                         help="Output. The history information. ")
@@ -130,9 +168,11 @@ if __name__ == "__main__":
                         help="Input. Default is 1. Whether train or predict. \n"
                              "1: train, 0: predict. ")
     parser.add_argument("-n_features", default=3840, type=int,
-                        help="Input. Default is 1000. Number of features in the input dataset.")
+                        help="Input. Default is 3840. Number of features in the input dataset.")
     parser.add_argument("-reshape", type=int, default=[64, 60, 1], nargs="+",
                         help="Input. Default is 64 60 1. Reshape the dataset. ")
+    parser.add_argument("-remove_H", type=int, default=0,
+                        help="Input, optional. Default is 0. Whether remove hydrogens. ")
 
     args = parser.parse_args()
 
@@ -144,33 +184,39 @@ if __name__ == "__main__":
     do_eval = False
     ytrue = []
 
-    if os.path.exists(args.fn1):
-        df = pd.read_csv(args.fn1, index_col=0, header=0).dropna()
-        print("DataFrame Shape", df.shape)
-        if args.train:
-            y = df[args.pKa_col[0]].values
-        X = df.values[:, :args.n_features]
+    for fn in args.fn1:
+        if os.path.exists(fn):
+            df = pd.read_csv(fn, index_col=0, header=0).dropna()
+            if args.remove_H:
+                df = remove_all_hydrogens(df, args.n_features)
 
-        if args.pKa_col[0] in df.columns.values:
-            ytrue = df[args.pKa_col[0]].values
+            print("DataFrame Shape", df.shape)
+            if args.train:
+                if args.pKa_col[0] in df.columns.values:
+                    y = y + list(df[args.pKa_col[0]].values)
+                else:
+                    print("No such column %s in input file. " % args.pKa_col[0])
+            X = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
 
-            do_eval = True
+            if args.pKa_col[0] in df.columns.values:
+                ytrue = ytrue + list(df[args.pKa_col[0]].values)
 
-    if os.path.exists(args.fn2):
-        df2 = pd.read_csv(args.fn2, index_col=0, header=0).dropna()
-        X2 = df2.values[:, :args.n_features]
-        if args.train:
-            y2 = df2[args.pKa_col[-1]].values
-            y = list(y) + list(y2)
+                do_eval = True
 
-        X = np.concatenate((X, X2), axis=0)
+    for fn in args.fn2:
+        if os.path.exists(fn):
+            df = pd.read_csv(fn, index_col=0, header=0).dropna()
+            if args.remove_H:
+                df = remove_all_hydrogens(df, args.n_features)
 
-        if args.pKa_col[-1] in df2.columns.values:
-            ytrue2 = df2[args.pKa_col[1]].values
+            X = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
+            if args.train:
+                y = y + list(df[args.pKa_col[-1]].values)
 
-            ytrue = list(ytrue) + list(ytrue2)
+            if args.pKa_col[-1] in df.columns.values:
+                ytrue = list(ytrue) + df[args.pKa_col[1]].values
 
-            do_eval = True
+                do_eval = True
 
     print("DataSet Loaded")
 
@@ -207,7 +253,7 @@ if __name__ == "__main__":
     else:
         scaler = joblib.load(args.scaler)
 
-        Xs = scaler.transform(X).reshape((-1, 64, 60, 1))
+        Xs = scaler.transform(X).reshape((-1, args.reshape[0], args.reshape[1], args.reshape[2]))
 
         model = tf.keras.models.load_model(args.model,
                                            custom_objects={'RMSE': RMSE,
