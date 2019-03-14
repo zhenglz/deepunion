@@ -254,6 +254,7 @@ if __name__ == "__main__":
 
         scaler = preprocessing.StandardScaler()
         Xs = scaler.fit_transform(X)
+        Xval = scaler.fit_transform(Xval)
         joblib.dump(scaler, args.scaler)
         print("DataSet Scaled")
 

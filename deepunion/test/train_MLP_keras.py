@@ -129,7 +129,7 @@ def create_model(input_size, lr=0.0001):
     model.add(tf.keras.layers.Activation("relu"))
 
     sgd = tf.keras.optimizers.SGD(lr=lr, momentum=0.9, decay=1e-6, )
-    model.compile(optimizer=sgd, loss=PCC_RMSE, metrics=["mse", PCC, RMSE])
+    model.compile(optimizer=sgd, loss=PCC, metrics=["mse", RMSE])
 
     return model
 
@@ -180,11 +180,11 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit(0)
 
-    X, y = None, None
+    X, y = None, []
     do_eval = False
     ytrue = []
 
-    for fn in args.fn1:
+    for i, fn in enumerate(args.fn1):
         if os.path.exists(fn):
             df = pd.read_csv(fn, index_col=0, header=0).dropna()
             if args.remove_H:
@@ -196,7 +196,10 @@ if __name__ == "__main__":
                     y = y + list(df[args.pKa_col[0]].values)
                 else:
                     print("No such column %s in input file. " % args.pKa_col[0])
-            X = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
+            if i == 0:
+                X = df.values[:, :args.n_features]
+            else:
+                X = np.concatenate((X, df.values[:, :args.n_features]), axis=0)
 
             if args.pKa_col[0] in df.columns.values:
                 ytrue = ytrue + list(df[args.pKa_col[0]].values)
