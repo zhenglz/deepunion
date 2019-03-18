@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="050feb0a-9d84-4d89-be82-82dd8d075ca5" name="Default Changelist" comment="" />
+    <list default="true" id="050feb0a-9d84-4d89-be82-82dd8d075ca5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/deepunion/test/parse_vina_history.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,15 +13,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/fingerprints.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="697">
-              <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/downloader.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -46,8 +40,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/train_MLP_keras.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3638">
-              <caret line="223" selection-end-line="274" />
+            <state relative-caret-position="3689">
+              <caret line="226" selection-end-line="277" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -58,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/train_models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="45" column="48" lean-forward="true" selection-start-line="45" selection-start-column="48" selection-end-line="45" selection-end-column="48" />
+            <state relative-caret-position="612">
+              <caret line="45" column="48" selection-start-line="45" selection-start-column="48" selection-end-line="45" selection-end-column="48" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -70,7 +64,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-126">
+            <state relative-caret-position="3264">
               <caret line="199" column="28" selection-start-line="199" selection-start-column="28" selection-end-line="199" selection-end-column="31" />
               <folding>
                 <element signature="e#23#41#0" expanded="true" />
@@ -79,13 +73,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/generate_features.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-84">
-              <caret line="224" column="66" lean-forward="true" selection-start-line="224" selection-start-column="66" selection-end-line="224" selection-end-column="66" />
+            <state relative-caret-position="-289">
+              <caret line="227" column="57" selection-start-line="227" selection-start-column="57" selection-end-line="227" selection-end-column="57" />
               <folding>
                 <element signature="e#23#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/parse_vina_history.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="56" column="51" lean-forward="true" selection-start-line="56" selection-start-column="51" selection-end-line="56" selection-end-column="51" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -175,20 +181,21 @@
         <option value="$PROJECT_DIR$/deepunion/test/train_MLP_keras.py" />
         <option value="$PROJECT_DIR$/deepunion/test/train_models.py" />
         <option value="$PROJECT_DIR$/deepunion/generate_features.py" />
+        <option value="$PROJECT_DIR$/deepunion/test/parse_vina_history.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="8" />
-    <option name="y" value="30" />
-    <option name="width" value="1600" />
-    <option name="height" value="838" />
+    <option name="y" value="23" />
+    <option name="width" value="1366" />
+    <option name="height" value="705" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -201,11 +208,16 @@
               <item name="deepunion" type="462c0819:PsiDirectoryNode" />
               <item name="deepunion" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="deepunion" type="b2602c69:ProjectViewProjectNode" />
+              <item name="deepunion" type="462c0819:PsiDirectoryNode" />
+              <item name="deepunion" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -333,14 +345,20 @@
       <option name="project" value="LOCAL" />
       <updated>1552615986271</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="add generate features">
+      <created>1552616898496</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1552616898496</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="8" y="30" width="1600" height="838" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="23" width="1366" height="705" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12792906" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14944237" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection Results" order="0" sideWeight="0.49968335" weight="0.3293011" />
@@ -352,8 +370,8 @@
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.19949335" side_tool="true" visible="true" weight="0.17069893" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.80050665" visible="true" weight="0.17069893" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.2007435" side_tool="true" visible="true" weight="0.20785597" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.7992565" visible="true" weight="0.20785597" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49841672" weight="0.3293011" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -365,7 +383,8 @@
     <MESSAGE value="generate features" />
     <MESSAGE value="add a DNN model" />
     <MESSAGE value="update a DNN model" />
-    <option name="LAST_COMMIT_MESSAGE" value="update a DNN model" />
+    <MESSAGE value="add generate features" />
+    <option name="LAST_COMMIT_MESSAGE" value="add generate features" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -634,10 +653,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/test/train_MLP_keras.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3638">
-          <caret line="223" selection-end-line="274" />
+        <state relative-caret-position="3689">
+          <caret line="226" selection-end-line="277" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/train_models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="45" column="48" selection-start-line="45" selection-start-column="48" selection-end-line="45" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3264">
+          <caret line="199" column="28" selection-start-line="199" selection-start-column="28" selection-end-line="199" selection-end-column="31" />
+          <folding>
+            <element signature="e#23#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -672,32 +711,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/test/train_models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="45" column="48" lean-forward="true" selection-start-line="45" selection-start-column="48" selection-end-line="45" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-126">
-          <caret line="199" column="28" selection-start-line="199" selection-start-column="28" selection-end-line="199" selection-end-column="31" />
-          <folding>
-            <element signature="e#23#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/generate_features.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-84">
-          <caret line="224" column="66" lean-forward="true" selection-start-line="224" selection-start-column="66" selection-end-line="224" selection-end-column="66" />
+        <state relative-caret-position="-289">
+          <caret line="227" column="57" selection-start-line="227" selection-start-column="57" selection-end-line="227" selection-end-column="57" />
           <folding>
             <element signature="e#23#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/parse_vina_history.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="56" column="51" lean-forward="true" selection-start-line="56" selection-start-column="51" selection-end-line="56" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
