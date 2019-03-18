@@ -31,34 +31,34 @@ class SimpleCNN(nn.Module):
         self.stride  = 1
         self.padding = 0
 
-        self.conv1 = nn.Conv2d(1, 60, kernel_size=self.kernel, stride=self.stride, padding=self.padding)
-        self.channel = 60
+        self.conv1 = nn.Conv2d(1, 128, kernel_size=self.kernel, stride=self.stride, padding=self.padding)
+        self.channel = 128
         self.w = int((self.w - self.kernel + 2 * self.padding) / self.stride + 1)
         self.h = int((self.h - self.kernel + 2 * self.padding) / self.stride + 1)
 
         self.relu1 = nn.ReLU(inplace=True)
 
-        self.conv2 = nn.Conv2d(60, 30, kernel_size=self.kernel, stride=self.stride, padding=self.padding)
-        self.channel = 30
+        self.conv2 = nn.Conv2d(128, 64, kernel_size=self.kernel, stride=self.stride, padding=self.padding)
+        self.channel = 64
         self.w = int((self.w - self.kernel + 2 * self.padding) / self.stride + 1)
         self.h = int((self.h - self.kernel + 2 * self.padding) / self.stride + 1)
 
         self.relu2 = nn.ReLU(inplace=True)
 
-        self.conv3 = nn.Conv2d(30, 15, kernel_size=self.kernel, stride=self.stride, padding=self.padding)
-        self.channel = 15
+        self.conv3 = nn.Conv2d(64, 32, kernel_size=self.kernel, stride=self.stride, padding=self.padding)
+        self.channel = 32
         self.w = int((self.w - self.kernel + 2 * self.padding) / self.stride + 1)
         self.h = int((self.h - self.kernel + 2 * self.padding) / self.stride + 1)
 
         self.relu3 = nn.ReLU(inplace=True)
 
-        self.dense1 = nn.Linear(self.channel * self.w * self.h, 200)
+        self.dense1 = nn.Linear(self.channel * self.w * self.h, 1000)
         self.relu4 = nn.ReLU(inplace=True)
-        self.dense2 = nn.Linear(200, 100)
+        self.dense2 = nn.Linear(1000, 400)
         self.relu5 = nn.ReLU(inplace=True)
-        self.dense3 = nn.Linear(100, 32)
+        self.dense3 = nn.Linear(400, 100)
         self.relu6 = nn.ReLU(inplace=True)
-        self.out    = nn.Linear(32, 1)
+        self.out    = nn.Linear(100, 1)
 
     def forward(self, x):
 
@@ -84,10 +84,34 @@ def rmse(output, target):
 
 def PCC(output, target):
 
-    x = output.detach().numpy().ravel()
-    y = target.detach().numpy().ravel()
 
-    return stats.pearsonr(x, y)[0]
+    vx = target.view(-1) - torch.mean(target.view(-1))
+    vy = output.view(-1) - torch.mean(output.view(-1))
+
+    P = torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2)))
+    #P = vx * vy * torch.rsqrt(torch.sum(vx ** 2)) * torch.rsqrt(torch.sum(vy ** 2))
+
+    #x = output.detach().numpy().ravel()
+    #y = target.detach().numpy().ravel()
+
+    #return stats.pearsonr(x, y)[0]
+    return P
+
+
+def PCC_loss(output, target):
+
+
+    vx = target.view(-1) - torch.mean(target.view(-1))
+    vy = output.view(-1) - torch.mean(output.view(-1))
+
+    P = torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2)))
+    #P = vx * vy * torch.rsqrt(torch.sum(vx ** 2)) * torch.rsqrt(torch.sum(vy ** 2))
+
+    #x = output.detach().numpy().ravel()
+    #y = target.detach().numpy().ravel()
+
+    #return stats.pearsonr(x, y)[0]
+    return 1 - P
 
 
 def remove_shell_features(dat, shell_index, features_n=64):
@@ -130,17 +154,15 @@ def remove_all_hydrogens(dat, n_features):
 
 def rmse_pcc_loss(output, target):
     alpha = 0.8
-    rmse = torch.sqrt(torch.mean((output - target) ** 2))
+    RMSE = torch.sqrt(torch.mean((output - target) ** 2))
 
-    x = output
-    y = target
+    vx = target - torch.mean(target)
+    vy = output - torch.mean(output)
 
-    vx = x - torch.mean(x)
-    vy = y - torch.mean(y)
+    #pcc = torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2)))
+    PCC = vx * vy * torch.rsqrt(torch.sum(vx ** 2)) * torch.rsqrt(torch.sum(vy ** 2))
 
-    pcc = torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2)))
-
-    return alpha * rmse + (1-alpha) * (1- pcc)
+    return alpha * RMSE + (1-alpha) * (1- PCC)
 
 
 def debug_memory():
@@ -244,11 +266,6 @@ if __name__ == "__main__":
             if args.train > 0:
                 y = y + list(df[args.pKa_col[-1]].values)
 
-            if args.pKa_col[-1] in df.columns.values and args.train == 0:
-                ytrue = list(ytrue) + df[args.pKa_col[1]].values
-
-                do_eval = True
-
     col_names = ['pKa', 'pKa_relu']
     Xval, yval = np.array([]), []
 
@@ -288,15 +305,16 @@ if __name__ == "__main__":
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
         model = SimpleCNN(args.reshape)
-        if torch.cuda.device_count() > 1:
-            print("Let's use", torch.cuda.device_count(), "GPUs!")
+        #if torch.cuda.device_count() > 1:
+        #    print("Let's use", torch.cuda.device_count(), "GPUs!")
             # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
-            model = nn.DataParallel(model)
+        #    model = nn.DataParallel(model)
 
         model = model.to(device)
         loss_func = nn.MSELoss()
         optimizer = optim.SGD(model.parameters(), lr=args.lr_init, momentum=0.9)
 
+        # print model summary
         print(model.eval())
 
         XTrain = torch.from_numpy(Xtrain).type(torch.FloatTensor)
@@ -304,17 +322,18 @@ if __name__ == "__main__":
 
         # Pytorch train and test sets
         train = torch.utils.data.TensorDataset(XTrain, YTrain)
-        # test = torch.utils.data.TensorDataset(XTest, YTest)
+        train_loader = torch.utils.data.DataLoader(train, batch_size=args.batch, shuffle=False)
 
-        train_loader = torch.utils.data.DataLoader(train, batch_size=32, shuffle=False)
-
-        min_val = [[0.0, 999.9], ]
+        min_val = [[0, 999.9], ]
         delta = args.delta
         patience = args.patience
+
+        history = []
 
         for epoch in range(args.epochs):  # loop over the dataset multiple times
 
             running_loss = 0.0
+            running_pcc = 0.0
             for i, data in enumerate(train_loader):
                 # get the inputs
                 inputs, labels = data
@@ -328,43 +347,47 @@ if __name__ == "__main__":
 
                 # forward + backward + optimize
                 outputs = model(X)
-                loss = loss_func(outputs, Y)
+                #loss = PCC_loss(outputs, Y)
+                loss = rmse(outputs, Y)
+                #loss = loss_func(outputs, Y)
                 loss.backward()
                 optimizer.step()
 
                 # print statistics
                 running_loss += float(loss)
 
+                r = PCC(outputs, Y)  
+                running_pcc = float(r)
                 # clear gpu memory
-                del X, Y
+                del X, Y, r
                 torch.cuda.empty_cache()
-                debug_memory()
+                #debug_memory()
 
                 # do validating test
             Xval = Variable(torch.from_numpy(Xtest).type(torch.FloatTensor),
-                            requires_grad=False, volatile=True).to(device)
+                            requires_grad=False).to(device)
             # Xval = torch.Tensor.cpu(Xval)
             yval = model(Xval).cpu()
 
             val_rmse = float(rmse(yval, torch.from_numpy(np.array(ytest)).type(torch.FloatTensor)))
-            val_pcc = float(PCC(yval, torch.from_numpy(np.array(ytest)).type(torch.FloatTensor)))
+            val_pcc = float(PCC(yval, torch.from_numpy(ytest.ravel()).type(torch.FloatTensor)))
 
             del Xval, yval
             debug_memory()
             torch.cuda.empty_cache()
 
-            print('[%5d] loss: %.3f, val_loss: %.3f, val_pcc: %.3f' %
-                  (epoch, running_loss / (i + 1), val_rmse, val_pcc))
-            # del val_rmse, val_pcc
-            # debug_memory()
+            print('[%5d] loss: %.3f, pcc: %.3f val_loss: %.3f, val_pcc: %.3f' %
+                  (epoch, running_loss / (i + 1), running_pcc, val_rmse, val_pcc))
+
+            history.append([epoch, running_loss / (i + 1), running_pcc, val_rmse, val_pcc])
 
             # early stopping
             # do validating test
-
             if min_val[-1][1] - val_rmse >= delta:
                 print("Model improve from %.3f to %.3f . Save model to %s " % (min_val[-1][1], val_rmse, args.model))
                 torch.save(model.state_dict(), args.model)
                 min_val.append([epoch, val_rmse])
+
             else:
                 if epoch - min_val[-1][0] >= patience:
                     print("Get best model at epoch = %d" % min_val[-1][0])
@@ -372,12 +395,13 @@ if __name__ == "__main__":
                 else:
                     pass
 
-        print('Finished Training')
+            hist = pd.DataFrame(history, columns=['epochs', 'loss', 'pcc', 'val_loss', 'val_pcc'])
+            hist.to_csv(args.log, header=True, index=False, float_format="%.4f")
 
+        print('Finished Training')
 
     else:
         scaler = joblib.load(args.scaler)
-
         Xs = scaler.transform(X).reshape((-1, args.reshape[0], args.reshape[1], args.reshape[2]))
 
         model = None
@@ -385,7 +409,7 @@ if __name__ == "__main__":
         ypred = pd.DataFrame()
         ypred['pKa_predicted'] = model.predict(Xs).ravel()
         if do_eval:
-            print("PCC : %.3f" % pcc(ypred['pKa_predicted'].values, ytrue))
+            print("PCC : %.3f" % PCC(ypred['pKa_predicted'].values, ytrue))
             print("RMSE: %.3f" % rmse(ypred['pKa_predicted'].values, ytrue))
 
             ypred['pKa_true'] = ytrue

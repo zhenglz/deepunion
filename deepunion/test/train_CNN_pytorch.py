@@ -11,10 +11,11 @@ from torch import optim
 import torch
 import torch.utils.data
 import torch.cuda
+from torch.autograd import Variable
 import pandas as pd
 import sys
 from sklearn import model_selection
-from torch.autograd import Variable
+
 
 
 # Fully connected neural network with one hidden layer
@@ -77,13 +78,13 @@ class SimpleCNN(nn.Module):
 
         self.relu3 = nn.ReLU(inplace=True)
 
-        self.dense1 = nn.Linear(self.channel * self.w * self.h, 200)
+        self.dense1 = nn.Linear(self.channel * self.w * self.h, 1000)
         self.relu4 = nn.ReLU(inplace=True)
-        self.dense2 = nn.Linear(200, 100)
+        self.dense2 = nn.Linear(1000, 400)
         self.relu5 = nn.ReLU(inplace=True)
-        self.dense3 = nn.Linear(100, 32)
+        self.dense3 = nn.Linear(400, 100)
         self.relu6 = nn.ReLU(inplace=True)
-        self.out    = nn.Linear(32, 1)
+        self.out    = nn.Linear(100, 1)
 
     def forward(self, x):
 
@@ -294,10 +295,10 @@ if __name__ == "__main__":
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
         model = SimpleCNN(args.reshape)
-        if torch.cuda.device_count() > 1:
-            print("Let's use", torch.cuda.device_count(), "GPUs!")
+        #if torch.cuda.device_count() > 1:
+        #    print("Let's use", torch.cuda.device_count(), "GPUs!")
             # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
-            model = nn.DataParallel(model)
+        #    model = nn.DataParallel(model)
 
         model = model.to(device)
         loss_func = nn.MSELoss()
@@ -317,6 +318,7 @@ if __name__ == "__main__":
         min_val = [[0.0, 999.9],]
         delta = 0.0001
         patience = 40
+        history = []
 
         for epoch in range(args.epochs):  # loop over the dataset multiple times
 
@@ -325,16 +327,16 @@ if __name__ == "__main__":
                 # get the inputs
                 inputs, labels = data
                 X, Y = Variable(torch.FloatTensor(inputs),
-                                requires_grad=False, volatile=True).to(device), \
+                                requires_grad=False).to(device), \
                        Variable(torch.FloatTensor(labels),
-                                requires_grad=False, volatile=True).to(device)
+                                requires_grad=False).to(device)
 
                 # zero the parameter gradients
                 optimizer.zero_grad()
 
                 # forward + backward + optimize
                 outputs = model(X)
-                loss = loss_func(outputs, Y)
+                loss = rmse(outputs, Y)
                 loss.backward()
                 optimizer.step()
 
@@ -349,24 +351,32 @@ if __name__ == "__main__":
 
             # do validating test
             Xval = Variable(torch.from_numpy(Xtest).type(torch.FloatTensor),
-                            requires_grad=False, volatile=True).to(device)
+                            requires_grad=False).to(device)
             #Xval = torch.Tensor.cpu(Xval)
             yval = model(Xval).cpu()
 
             val_rmse = float(rmse(yval, torch.from_numpy(np.array(ytest).reshape(-1, 1)).type(torch.FloatTensor)))
             val_pcc = float(PCC(yval, torch.from_numpy(np.array(ytest).reshape(-1, 1)).type(torch.FloatTensor)))
 
+            #del Xval, yval
+            #debug_memory()
+            #torch.cuda.empty_cache()
+
+            print('[%5d] loss: %.3f, val_loss: %.3f, val_pcc: %.3f, val_r: %.3f' %
+                  (epoch, running_loss / (i+1), val_rmse, val_pcc, float(pcc(yval, torch.from_numpy(np.array(ytest).reshape(-1, 1)).type(torch.FloatTensor)))))
+            #del val_rmse, val_pcc
+            #debug_memory()
+            
             del Xval, yval
             debug_memory()
             torch.cuda.empty_cache()
 
-            print('[%5d] loss: %.3f, val_loss: %.3f, val_pcc: %.3f' %
-                  (epoch, running_loss / (i+1), val_rmse, val_pcc))
-            #del val_rmse, val_pcc
-            #debug_memory()
-
             # early stopping
             # do validating test
+            history.append([epoch, running_loss/(i+1), val_rmse, val_pcc])
+            log = pd.DataFrame(history)
+            log.columns = ['epochs', 'loss', 'val_loss', 'val_pcc']
+            log.to_csv(args.log, header=True, index=False, float_format="%.4f")
 
             if min_val[-1][1] - val_rmse >= delta:
                 print("Model improve from %.3f to %.3f . Save model to %s " % (min_val[-1][1], val_rmse, args.model))
