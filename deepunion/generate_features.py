@@ -4,11 +4,88 @@ import numpy as np
 import pandas as pd
 import mdtraj as mt
 import itertools
+import re
 import sys
 from collections import OrderedDict
 from mpi4py import MPI
 import argparse
 from argparse import RawDescriptionHelpFormatter
+
+
+class ResidueCounts(object):
+
+    def __init__(self, pdb_fn, ligcode="LIG"):
+
+        self.pdb = mt.load_pdb(pdb_fn)
+        self.receptor_ids_ = None
+        self.ligand_ids_ = None
+        self.resid_pairs_ = None
+        self.ligand_n_atoms_ = 0
+        self.distance_calculated_ = False
+
+        self.max_pairs_ = 500
+
+        self.top = self.pdb.topology
+
+    def get_receptor_seq(self):
+
+        pattern = re.compile("[A-Za-z]*")
+
+        res_seq = self.top.residues[:-1]
+        self.seq = [pattern.match(x).group(0) for x in res_seq]
+        self.ligand_n_atoms_ = self.top.select("resid %d" % len(self.seq)).shape[0]
+
+        return self
+
+    def get_resid_pairs(self):
+
+        pairs_ = list(itertools.product(self.receptor_ids_, self.ligand_ids_))
+        if len(pairs_) > self.max_pairs_:
+            self.resid_pairs_ = pairs_[:self.max_pairs_]
+        else:
+            self.resid_pairs_ = pairs_
+
+        return self
+
+    def cal_distances(self, residue_pair, ignore_hydrogen=True):
+
+        if ignore_hydrogen:
+            indices_a = self.pdb.topology.select("resid %d and element H" % residue_pair[0])
+            indices_b = self.pdb.topology.select("resid %d and element H" % residue_pair[1])
+        else:
+            indices_a = self.pdb.topology.select("resid %d" % residue_pair[0])
+            indices_b = self.pdb.topology.select("resid %d" % residue_pair[1])
+
+        pairs = itertools.product(indices_a, indices_b)
+
+        return mt.compute_distances(self.pdb, pairs)[0]
+
+    def contacts_nbyn(self, cutoff, resid_pair):
+
+        #if not self.distance_calculated_:
+        distances = np.sum(self.cal_distances(resid_pair) <= cutoff)
+
+        return distances / (self.top.select("resid %d" % resid_pair[0]).shape[0] *
+                            self.ligand_n_atoms_)
+
+    def do_preparation(self):
+        if self.receptor_ids_ is None:
+            self.get_receptor_seq()
+        if self.resid_pairs_ is None:
+            self.get_resid_pairs()
+
+        return self
+
+    def distances_all_pairs(self, cutoff):
+        # do preparation
+        self.do_preparation()
+
+        # looping over all pairs
+        d = np.zeros(len(self.resid_pairs_))
+        for i, p in enumerate(self.resid_pairs_):
+            d[i] = self.contacts_nbyn(cutoff, p)
+
+        return d
 
 
 class AtomTypeCounts(object):

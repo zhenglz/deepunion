@@ -19,8 +19,9 @@ def convert_lig(lig_in, lig_out):
     return None
 
 def cat_rec_lig(rec, lig, out):
-
-    job = sp.Popen("cat %s %s | awk '$1 ~ /ATOM/ || $1 ~ /HETATM/ {print $0}' | awk '$4 != /HOH/ {print $0}' > %s"%(rec, lig, out), shell=True)
+    job = sp.Popen("cat %s | awk '$1 ~ /ATOM/ {print $0}' > temp_rec" %rec, shell=True )
+    job.communicate()
+    job = sp.Popen("cat temp_rec %s | awk '$1 ~ /ATOM/ || $1 ~ /HETATM/ {print $0}' | awk '$4 != /HOH/ {print $0}' > %s"%(lig, out), shell=True)
     job.communicate()
 
 def lig_name_change(lig_in, lig_out, lig_code):
@@ -45,7 +46,7 @@ def main():
 
         rec = os.path.join(p, p+"_protein.pdb")
         lig = os.path.join(p, p+"_ligand.mol2")
-        if not os.path.exists(os.path.join(p, "%s_cplx.pdb" % p)):
+        if True: #if not os.path.exists(os.path.join(p, "%s_cplx.pdb" % p)):
             try:
                 convert_lig(lig, "t1_%s.pdb" % p)
                 lig_name_change("t1_%s.pdb" % p, "t2_%s.pdb" % p, "LIG")
