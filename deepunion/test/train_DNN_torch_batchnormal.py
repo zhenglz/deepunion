@@ -1,4 +1,5 @@
-import sys
+#!/usr/bin/env python
+
 from sklearn import preprocessing
 import numpy as np
 from sklearn.externals import joblib
