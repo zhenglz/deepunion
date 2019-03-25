@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="050feb0a-9d84-4d89-be82-82dd8d075ca5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/deepunion/test/generate_contact_features.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deepunion/test/train_branchednet_torch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deepunion/test/train_DNN_torch_batchnormal.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deepunion/test/train_DNN_torch_dropout.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion/generate_features.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/generate_features.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deepunion/test/cat_rec_lig.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/cat_rec_lig.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/test/cat_csv_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/cat_csv_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/test/identify_best_pose.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/identify_best_pose.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/test/train_DNN_torch.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/train_DNN_torch.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,30 +18,9 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3264">
-              <caret line="199" column="28" selection-start-line="199" selection-start-column="28" selection-end-line="199" selection-end-column="31" />
-              <folding>
-                <element signature="e#23#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/generate_features.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="16" selection-end-line="382" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/generate_contact_features.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5168">
+            <state relative-caret-position="-353">
               <caret line="314" column="25" selection-start-line="314" selection-start-column="25" selection-end-line="314" selection-end-column="25" />
               <folding>
                 <element signature="e#23#41#0" expanded="true" />
@@ -52,8 +32,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1836">
-              <caret line="124" selection-start-line="124" selection-end-line="161" />
+            <state relative-caret-position="126">
+              <caret line="162" lean-forward="true" selection-end-line="429" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -61,14 +41,46 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch_dropout.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch_batchnormal.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="83" column="42" lean-forward="true" selection-start-line="83" selection-start-column="42" selection-end-line="83" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/train_branchednet_torch.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="381" column="29" selection-start-line="381" selection-start-column="29" selection-end-line="381" selection-end-column="29" />
+            <state relative-caret-position="480">
+              <caret line="374" column="26" selection-start-line="374" selection-start-column="26" selection-end-line="374" selection-end-column="26" />
               <folding>
                 <element signature="e#23#43#0" expanded="true" />
-                <element signature="e#8392#10008#1" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/cat_csv_files.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-285">
+              <caret line="9" column="78" selection-start-line="9" selection-start-column="78" selection-end-line="9" selection-end-column="78" />
+              <folding>
+                <element signature="e#23#33#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -178,14 +190,17 @@
         <option value="$PROJECT_DIR$/deepunion/generate_features.py" />
         <option value="$PROJECT_DIR$/deepunion/test/generate_contact_features.py" />
         <option value="$PROJECT_DIR$/deepunion/test/train_branchednet_torch.py" />
+        <option value="$PROJECT_DIR$/deepunion/test/cat_csv_files.py" />
+        <option value="$PROJECT_DIR$/deepunion/test/train_DNN_torch.py" />
+        <option value="$PROJECT_DIR$/deepunion/test/train_DNN_torch_dropout.py" />
+        <option value="$PROJECT_DIR$/deepunion/test/train_DNN_torch_batchnormal.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="8" />
-    <option name="y" value="30" />
-    <option name="width" value="1366" />
-    <option name="height" value="820" />
+    <option name="y" value="22" />
+    <option name="width" value="1600" />
+    <option name="height" value="838" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -349,14 +364,21 @@
       <option name="project" value="LOCAL" />
       <updated>1552616898496</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="add branched net">
+      <created>1553137981950</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1553137981950</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="8" y="30" width="1366" height="820" extended-state="0" />
+    <frame x="0" y="22" width="1600" height="838" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20743494" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17669411" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection Results" order="0" sideWeight="0.49968335" weight="0.3293011" />
@@ -368,8 +390,8 @@
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.20594795" side_tool="true" visible="true" weight="0.22038567" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.79405206" visible="true" weight="0.22038567" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.20645979" side_tool="true" visible="true" weight="0.21505377" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.79354024" visible="true" weight="0.21505377" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49841672" weight="0.3293011" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -382,7 +404,8 @@
     <MESSAGE value="add a DNN model" />
     <MESSAGE value="update a DNN model" />
     <MESSAGE value="add generate features" />
-    <option name="LAST_COMMIT_MESSAGE" value="add generate features" />
+    <MESSAGE value="add branched net" />
+    <option name="LAST_COMMIT_MESSAGE" value="add branched net" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -672,6 +695,13 @@
     <entry file="file://$USER_HOME$/.conda/envs/deeplearn/lib/python3.6/site-packages/sklearn/externals/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$USER_HOME$/.conda/envs/deeplearn/lib/python3.6/site-packages/torch/__init__.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="80" column="8" selection-start-line="80" selection-start-column="8" selection-end-line="80" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/test/gen_nmacplx_features.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3264">
@@ -686,26 +716,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="16" selection-end-line="382" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/test/generate_contact_features.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5168">
-          <caret line="314" column="25" selection-start-line="314" selection-start-column="25" selection-end-line="314" selection-end-column="25" />
-          <folding>
-            <element signature="e#23#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="124" selection-start-line="124" selection-end-line="161" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -751,11 +761,57 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/test/train_branchednet_torch.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="381" column="29" selection-start-line="381" selection-start-column="29" selection-end-line="381" selection-end-column="29" />
+        <state relative-caret-position="480">
+          <caret line="374" column="26" selection-start-line="374" selection-start-column="26" selection-end-line="374" selection-end-column="26" />
           <folding>
             <element signature="e#23#43#0" expanded="true" />
-            <element signature="e#8392#10008#1" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/generate_contact_features.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-353">
+          <caret line="314" column="25" selection-start-line="314" selection-start-column="25" selection-end-line="314" selection-end-column="25" />
+          <folding>
+            <element signature="e#23#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/cat_csv_files.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-285">
+          <caret line="9" column="78" selection-start-line="9" selection-start-column="78" selection-end-line="9" selection-end-column="78" />
+          <folding>
+            <element signature="e#23#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch_dropout.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="162" lean-forward="true" selection-end-line="429" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch_batchnormal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="83" column="42" lean-forward="true" selection-start-line="83" selection-start-column="42" selection-end-line="83" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>

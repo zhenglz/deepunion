@@ -43,59 +43,62 @@ class NeuralNet(nn.Module):
 
 class SimpleCNN(nn.Module):
 
-    # Our batch shape for input x is (3, 32, 32)
-
     def __init__(self, input_size):
         super(SimpleCNN, self).__init__()
 
         # channel, w, h
         self.channel = input_size[0]
-        self.w       = input_size[1]
-        self.h       = input_size[2]
-        self.kernel  = 4
-        self.stride  = 1
+        self.w = input_size[1]
+        self.h = input_size[2]
+        self.kernel = 4
+        self.stride = 1
         self.padding = 0
 
         self.conv1 = nn.Conv2d(1, 128, kernel_size=self.kernel, stride=self.stride, padding=self.padding)
         self.channel = 128
         self.w = int((self.w - self.kernel + 2 * self.padding) / self.stride + 1)
         self.h = int((self.h - self.kernel + 2 * self.padding) / self.stride + 1)
-
+        self.bn1 = nn.BatchNorm2d(self.channel)
         self.relu1 = nn.ReLU(inplace=True)
 
         self.conv2 = nn.Conv2d(128, 64, kernel_size=self.kernel, stride=self.stride, padding=self.padding)
         self.channel = 64
         self.w = int((self.w - self.kernel + 2 * self.padding) / self.stride + 1)
         self.h = int((self.h - self.kernel + 2 * self.padding) / self.stride + 1)
-
+        self.bn2 = nn.BatchNorm2d(self.channel)
         self.relu2 = nn.ReLU(inplace=True)
 
         self.conv3 = nn.Conv2d(64, 32, kernel_size=self.kernel, stride=self.stride, padding=self.padding)
         self.channel = 32
         self.w = int((self.w - self.kernel + 2 * self.padding) / self.stride + 1)
         self.h = int((self.h - self.kernel + 2 * self.padding) / self.stride + 1)
-
+        self.bn3 = nn.BatchNorm2d(self.channel)
         self.relu3 = nn.ReLU(inplace=True)
 
         self.dense1 = nn.Linear(self.channel * self.w * self.h, 1000)
+        self.bn4 = nn.BatchNorm1d(1000)
         self.relu4 = nn.ReLU(inplace=True)
+
         self.dense2 = nn.Linear(1000, 400)
+        self.bn5 = nn.BatchNorm1d(400)
         self.relu5 = nn.ReLU(inplace=True)
+
         self.dense3 = nn.Linear(400, 100)
+        self.bn6 = nn.BatchNorm1d(100)
         self.relu6 = nn.ReLU(inplace=True)
-        self.out    = nn.Linear(100, 1)
+
+        self.out = nn.Linear(100, 1)
 
     def forward(self, x):
-
-        x = self.relu1(self.conv1(x))
-        x = self.relu2(self.conv2(x))
-        x = self.relu3(self.conv3(x))
+        x = self.relu1(self.bn1(self.conv1(x)))
+        x = self.relu2(self.bn2(self.conv2(x)))
+        x = self.relu3(self.bn3(self.conv3(x)))
 
         x = x.view(-1, self.channel * self.w * self.h)
 
-        x = self.relu4(self.dense1(x))
-        x = self.relu5(self.dense2(x))
-        x = self.relu6(self.dense3(x))
+        x = self.relu4(self.bn4(self.dense1(x)))
+        x = self.relu5(self.bn5(self.dense2(x)))
+        x = self.relu6(self.bn6(self.dense3(x)))
 
         x = self.out(x)
 
@@ -116,7 +119,6 @@ def pcc(output, target):
 
 
 def PCC(output, target):
-
     x = output.detach().numpy().ravel()
     y = target.detach().numpy().ravel()
 
@@ -124,7 +126,6 @@ def PCC(output, target):
 
 
 def remove_shell_features(dat, shell_index, features_n=64):
-
     df = dat.copy()
 
     start = shell_index * features_n
@@ -138,7 +139,6 @@ def remove_shell_features(dat, shell_index, features_n=64):
 
 
 def remove_atomtype_features(dat, feature_index, shells_n=60):
-
     df = dat.copy()
 
     for i in range(shells_n):
@@ -162,7 +162,7 @@ def remove_all_hydrogens(dat, n_features):
 
 
 def rmse_pcc_loss(output, target):
-    alpha = 0.8 
+    alpha = 0.8
     rmse = torch.sqrt(torch.mean((output - target) ** 2))
 
     x = output
@@ -173,20 +173,22 @@ def rmse_pcc_loss(output, target):
 
     pcc = torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2)))
 
-    return alpha * rmse + (1-alpha) * (1- pcc)
+    return alpha * rmse + (1 - alpha) * (1 - pcc)
+
 
 def debug_memory():
     import collections, gc, torch
     tensors = collections.Counter((str(o.device), o.dtype, tuple(o.shape))
                                   for o in gc.get_objects()
                                   if torch.is_tensor(o))
-    #for line in sorted(tensors.items()):
+    # for line in sorted(tensors.items()):
     #    print('{}\t{}'.format(*line))
-    #print("Clean items number ", len(tensors.items()))
+    # print("Clean items number ", len(tensors.items()))
+
 
 if __name__ == "__main__":
     d = """Train or predict the features based on protein-ligand complexes.
-    
+
     The input scaler is a scikit-learn standardscaler object.
     The model is saved from a DNN model built with pytorch.
 
@@ -294,10 +296,9 @@ if __name__ == "__main__":
             Xs = Xs.reshape(-1, args.reshape[0], args.reshape[1], args.reshape[2])
             Xtest = Xtest.reshape(-1, args.reshape[0], args.reshape[1], args.reshape[2])
 
-        #Xtrain, Xtest, ytrain, ytest = model_selection.train_test_split(Xs, y, test_size=0.2)
-        #print("Train and test split")
+        # Xtrain, Xtest, ytrain, ytest = model_selection.train_test_split(Xs, y, test_size=0.2)
+        # print("Train and test split")
         Xtrain, ytrain = Xs, y
-
 
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -305,9 +306,9 @@ if __name__ == "__main__":
             model = SimpleCNN(args.reshape)
         else:
             model = NeuralNet(args.reshape[0])
-        #if torch.cuda.device_count() > 1:
+        # if torch.cuda.device_count() > 1:
         #    print("Let's use", torch.cuda.device_count(), "GPUs!")
-            # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+        # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
         #    model = nn.DataParallel(model)
 
         model = model.to(device)
@@ -325,7 +326,7 @@ if __name__ == "__main__":
 
         train_loader = torch.utils.data.DataLoader(train, batch_size=32, shuffle=False)
 
-        min_val = [[0.0, 999.9],]
+        min_val = [[0.0, 999.9], ]
         delta = 0.0001
         patience = 40
         history = []
@@ -361,27 +362,28 @@ if __name__ == "__main__":
 
             # do validating test
             Xv = Variable(torch.from_numpy(Xtest).type(torch.FloatTensor),
-                            requires_grad=False).to(device)
-            #Xval = torch.Tensor.cpu(Xval)
+                          requires_grad=False).to(device)
+            # Xval = torch.Tensor.cpu(Xval)
             yv = model(Xv).cpu()
 
             val_rmse = float(rmse(yv, torch.from_numpy(np.array(ytest).reshape(-1, 1)).type(torch.FloatTensor)))
             val_pcc = float(PCC(yv, torch.from_numpy(np.array(ytest).reshape(-1, 1)).type(torch.FloatTensor)))
 
-            #del Xval, yval
-            #debug_memory()
-            #torch.cuda.empty_cache()
+            # del Xval, yval
+            # debug_memory()
+            # torch.cuda.empty_cache()
 
             print('[%5d] loss: %.3f, val_loss: %.3f, val_pcc: %.3f, val_r: %.3f' %
-                  (epoch, running_loss / (i+1), val_rmse, val_pcc, float(pcc(yv, torch.from_numpy(np.array(ytest).reshape(-1, 1)).type(torch.FloatTensor)))))
-            
+                  (epoch, running_loss / (i + 1), val_rmse, val_pcc,
+                   float(pcc(yv, torch.from_numpy(np.array(ytest).reshape(-1, 1)).type(torch.FloatTensor)))))
+
             del Xv, yv
             debug_memory()
             torch.cuda.empty_cache()
 
             # early stopping
             # do validating test
-            history.append([epoch, running_loss/(i+1), val_rmse, val_pcc])
+            history.append([epoch, running_loss / (i + 1), val_rmse, val_pcc])
             log = pd.DataFrame(history)
             log.columns = ['epochs', 'loss', 'val_loss', 'val_pcc']
             log.to_csv(args.log, header=True, index=False, float_format="%.4f")
@@ -405,7 +407,7 @@ if __name__ == "__main__":
         scaler = joblib.load(args.scaler)
         model = torch.load(args.model)
 
-        #if len(args.reshape) == 3:
+        # if len(args.reshape) == 3:
         Xs = scaler.transform(X).reshape(tuple([-1, ] + args.reshape))
 
         Xpred = Variable(torch.from_numpy(Xs).type(torch.FloatTensor),
@@ -421,9 +423,9 @@ if __name__ == "__main__":
         if do_eval:
             r = PCC(ypred.numpy().ravel(), np.array(y))
             error = float(rmse(ypred, torch.from_numpy(np.array(y).reshape(-1, 1)).type(torch.FloatTensor)))
-            print("PCC: %.3f \nRMSE: %.3f" %(r, error))
+            print("PCC: %.3f \nRMSE: %.3f" % (r, error))
             df['real'] = np.array(y)
 
         df['predicted'] = ypred.numpy().ravel()
-        #df.index = X.index
+        # df.index = X.index
         df.to_csv(args.out, header=True, index=True, float_format="%.3f")
