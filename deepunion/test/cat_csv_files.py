@@ -50,7 +50,7 @@ if __name__ == "__main__":
             sys.exit(1)
         else:
             dat['pKa'] = target['pKa'].values
-            dat = dat.reindex(target.index.values)
+            #dat = dat.reindex(target.index.values)
 
     dat.to_csv(args.out, header=True, index=True)
 
