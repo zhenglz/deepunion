@@ -44,7 +44,7 @@ class NeuralNet(nn.Module):
 
 class SimpleCNN(nn.Module):
 
-    def __init__(self, input_size):
+    def __init__(self, input_size, dropout=0.1):
         super(SimpleCNN, self).__init__()
 
         # channel, w, h
@@ -79,14 +79,17 @@ class SimpleCNN(nn.Module):
         self.dense1 = nn.Linear(self.channel * self.w * self.h, 1000)
         self.bn4 = nn.BatchNorm1d(1000)
         self.relu4 = nn.ReLU(inplace=True)
+        self.dropout1 = nn.Dropout(dropout)
 
         self.dense2 = nn.Linear(1000, 400)
         self.bn5 = nn.BatchNorm1d(400)
         self.relu5 = nn.ReLU(inplace=True)
+        self.dropout2 = nn.Dropout(dropout)
 
         self.dense3 = nn.Linear(400, 100)
         self.bn6 = nn.BatchNorm1d(100)
         self.relu6 = nn.ReLU(inplace=True)
+        self.dropout3 = nn.Dropout(dropout)
 
         self.out = nn.Linear(100, 1)
 
@@ -97,9 +100,9 @@ class SimpleCNN(nn.Module):
 
         x = x.view(-1, self.channel * self.w * self.h)
 
-        x = self.relu4(self.bn4(self.dense1(x)))
-        x = self.relu5(self.bn5(self.dense2(x)))
-        x = self.relu6(self.bn6(self.dense3(x)))
+        x = self.dropout1(self.relu4(self.bn4(self.dense1(x))))
+        x = self.dropout2(self.relu5(self.bn5(self.dense2(x))))
+        x = self.dropout3(self.relu6(self.bn6(self.dense3(x))))
 
         x = self.out(x)
 
@@ -111,12 +114,11 @@ def rmse(output, target):
 
 
 def pcc(output, target):
-    x, y = output, target
 
-    vx = x - torch.mean(x)
-    vy = y - torch.mean(y)
+    vx = output - torch.mean(output)
+    vy = target - torch.mean(target)
 
-    return torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2)))
+    return torch.div(torch.sum(vx * vy), torch.mul(torch.sqrt(torch.sum(vx ** 2)), torch.sqrt(torch.sum(vy ** 2))))
 
 
 def PCC(output, target):
@@ -124,6 +126,10 @@ def PCC(output, target):
     y = target.detach().numpy().ravel()
 
     return stats.pearsonr(x, y)[0]
+
+
+def RMSE(output, target):
+    return np.sqrt(np.mean(np.square(output - target)))
 
 
 def remove_shell_features(dat, shell_index, features_n=64):
@@ -163,18 +169,17 @@ def remove_all_hydrogens(dat, n_features):
 
 
 def rmse_pcc_loss(output, target):
-    alpha = 0.8
-    rmse = torch.sqrt(torch.mean((output - target) ** 2))
+    alpha = torch.tensor(0.8)
+    r = torch.sqrt(torch.mean((output - target) ** 2))
+    one = torch.tensor(1.0)
+    reverse_alpha = torch.tensor(0.2)
 
-    x = output
-    y = target
+    vx = output - torch.mean(output)
+    vy = target - torch.mean(target)
 
-    vx = x - torch.mean(x)
-    vy = y - torch.mean(y)
+    p = torch.div(torch.sum(vx * vy), torch.mul(torch.sqrt(torch.sum(vx ** 2)), torch.sqrt(torch.sum(vy ** 2))))
 
-    pcc = torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2)))
-
-    return alpha * rmse + (1 - alpha) * (1 - pcc)
+    return torch.add(torch.mul(alpha, r), torch.mul(reverse_alpha, one - p))
 
 
 def debug_memory():
@@ -348,12 +353,12 @@ if __name__ == "__main__":
 
                 # forward + backward + optimize
                 outputs = model(X)
-                loss = rmse(outputs, Y)
+                loss = rmse_pcc_loss(outputs, Y)
                 loss.backward()
                 optimizer.step()
 
                 # print statistics
-                running_loss += float(loss)
+                running_loss += float(loss.item())
 
                 # clear gpu memory
                 del X

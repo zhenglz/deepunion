@@ -280,8 +280,6 @@ if __name__ == "__main__":
 
     if args.train > 0:
 
-
-
         scaler = preprocessing.StandardScaler()
         X_train_val = np.concatenate((X, Xval), axis=0)
         scaler.fit(X_train_val)
@@ -356,9 +354,6 @@ if __name__ == "__main__":
                     break
                 else:
                     pass
-
-        model.save(args.model)
-        print("Save model. ")
 
     else:
         scaler = joblib.load(args.scaler)
