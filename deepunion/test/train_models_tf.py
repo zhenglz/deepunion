@@ -101,7 +101,31 @@ def remove_all_hydrogens(dat, n_features):
     return df
 
 
-def create_model(input_size, lr=0.0001, maxpool=True, dropout=0.1):
+def create_model_DNN(input_size, hidden_layers=[1000, 400, 200], lr=0.0001, maxpool=True, dropout=0.1):
+    model = tf.keras.Sequential()
+
+    for i, hl in enumerate(hidden_layers):
+        if i == 0:
+            model.add(tf.keras.layers.Dense(hl, input_dim=(input_size, ),
+                                            kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
+        else:
+            model.add(tf.keras.layers.Dense(hl, input_shape=(input_size, ),
+                                            kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
+
+        model.add(tf.keras.layers.Activation("relu"))
+        model.add(tf.keras.layers.BatchNormalization())
+        model.add(tf.keras.layers.Dropout(dropout))
+
+    model.add(tf.keras.layers.Dense(1, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
+    model.add(tf.keras.layers.Activation("relu"))
+
+    sgd = tf.keras.optimizers.SGD(lr=lr, momentum=0.9, decay=1e-6, )
+    model.compile(optimizer=sgd, loss=PCC_RMSE, metrics=['mse'])
+
+    return model
+
+
+def create_model(input_size, lr=0.0001, maxpool=True, dropout=0.1, hidden_layers=[400, 200, 100]):
     model = tf.keras.Sequential()
 
     model.add(tf.keras.layers.Conv2D(128, kernel_size=4, strides=1,
@@ -134,29 +158,15 @@ def create_model(input_size, lr=0.0001, maxpool=True, dropout=0.1):
 
     model.add(tf.keras.layers.Flatten())
 
-    model.add(tf.keras.layers.Dense(128, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
-    model.add(tf.keras.layers.Activation("relu"))
-    model.add(tf.keras.layers.BatchNormalization())
-    model.add(tf.keras.layers.Dropout(dropout))
+    for hl in hidden_layers:
 
-    model.add(tf.keras.layers.Dense(64,
-                                    kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
-    model.add(tf.keras.layers.Activation("relu"))
-    model.add(tf.keras.layers.BatchNormalization())
-    model.add(tf.keras.layers.Dropout(dropout))
-
-    model.add(tf.keras.layers.Dense(32, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
-    model.add(tf.keras.layers.Activation("relu"))
-    model.add(tf.keras.layers.BatchNormalization())
-    model.add(tf.keras.layers.Dropout(dropout))
-
-    model.add(tf.keras.layers.Dense(16, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
-    model.add(tf.keras.layers.Activation("relu"))
-    model.add(tf.keras.layers.BatchNormalization())
-    model.add(tf.keras.layers.Dropout(dropout))
+        model.add(tf.keras.layers.Dense(hl, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
+        model.add(tf.keras.layers.Activation("relu"))
+        model.add(tf.keras.layers.BatchNormalization())
+        model.add(tf.keras.layers.Dropout(dropout))
 
     model.add(tf.keras.layers.Dense(1, kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
-    model.add(tf.keras.layers.Activation("relu"))
+    #model.add(tf.keras.layers.Activation("relu"))
 
     sgd = tf.keras.optimizers.SGD(lr=lr, momentum=0.9, decay=1e-6, )
     model.compile(optimizer=sgd, loss=PCC_RMSE, metrics=['mse'])
@@ -216,6 +226,10 @@ if __name__ == "__main__":
                         help="Input. Default is 64 60 1. Reshape the dataset. ")
     parser.add_argument("-remove_H", type=int, default=0,
                         help="Input, optional. Default is 0. Whether remove hydrogens. ")
+    parser.add_argument("-hidden_layers", type=int, default=[400, 200, 100], nargs="+",
+                        help="Input, optional. Default is 400 200 100. The hidden layer units.")
+    parser.add_argument("-method", type=str, default='CNN',
+                        help="Input, optional. Default is CNN. Options: CNN, DNN. The learning network type.")
 
     args = parser.parse_args()
 
@@ -282,31 +296,39 @@ if __name__ == "__main__":
 
     if args.train > 0:
 
-
-
         scaler = preprocessing.StandardScaler()
         X_train_val = np.concatenate((X, Xval), axis=0)
         scaler.fit(X_train_val)
 
         joblib.dump(scaler, args.scaler)
 
-        Xtrain = scaler.transform(X).reshape((-1, args.reshape[0],
-                                              args.reshape[1],
-                                              args.reshape[2]))
-        Xval = scaler.transform(Xval).reshape((-1, args.reshape[0],
-                                               args.reshape[1],
-                                               args.reshape[2]))
-        Xtest = scaler.transform(Xtest).reshape((-1, args.reshape[0],
-                                                 args.reshape[1],
-                                                 args.reshape[2]))
+        if args.method == "CNN":
+            Xtrain = scaler.transform(X).reshape((-1, args.reshape[0],
+                                                  args.reshape[1],
+                                                  args.reshape[2]))
+            Xval = scaler.transform(Xval).reshape((-1, args.reshape[0],
+                                                   args.reshape[1],
+                                                   args.reshape[2]))
+            Xtest = scaler.transform(Xtest).reshape((-1, args.reshape[0],
+                                                     args.reshape[1],
+                                                     args.reshape[2]))
+        else:
+            Xtrain = scaler.transform(X)
+            Xval = scaler.transform(Xval)
+            Xtest = scaler.transform(Xtest)
+
         ytrain = np.array(y).reshape((-1, 1))
         yval = np.array(yval).reshape((-1, 1))
         ytest = np.array(ytest).reshape((-1, 1))
 
         print("DataSet Scaled")
-
-        model = create_model((args.reshape[0], args.reshape[1], args.reshape[2]),
-                             lr=args.lr_init, dropout=args.dropout)
+        if args.method == "CNN":
+            model = create_model((args.reshape[0], args.reshape[1], args.reshape[2]),
+                                 hidden_layers=args.hidden_layers,
+                                 lr=args.lr_init, dropout=args.dropout)
+        else:
+            model = create_model_DNN(args.n_features, hidden_layers=args.hidden_layers,
+                                     lr=args.lr_init, dropout=args.dropout)
 
         stopping = [[0, 999.9], ]
         history = []
@@ -354,7 +376,7 @@ if __name__ == "__main__":
                 model.save(args.model)
                 stopping.append([e, loss_val])
             else:
-                if e - history[-1][0] >= args.patience:
+                if e - stopping[-1][0] >= args.patience:
                     print("Get best model at epoch = %d." % stopping[-1][0])
                     break
                 else:

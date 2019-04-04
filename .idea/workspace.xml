@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="050feb0a-9d84-4d89-be82-82dd8d075ca5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/deepunion/test/cat_csv_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/cat_csv_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deepunion.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deepunion.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepunion/test/train_models_tf.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/train_models_tf.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,18 +15,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deepunion/test/generate_contact_features.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4575">
-              <caret line="314" column="25" selection-start-line="314" selection-start-column="25" selection-end-line="314" selection-end-column="25" />
-              <folding>
-                <element signature="e#23#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -45,11 +36,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch_batchnormal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
-              <caret line="83" column="38" selection-start-line="83" selection-start-column="38" selection-end-line="83" selection-end-column="38" />
+            <state relative-caret-position="-44">
+              <caret line="87" selection-start-line="87" selection-end-line="87" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deepunion/test/train_models_tf.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="232">
+              <caret line="108" column="57" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -69,7 +72,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepunion/test/cat_csv_files.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
+            <state relative-caret-position="120">
               <caret line="11" selection-start-line="11" selection-end-line="11" />
               <folding>
                 <element signature="e#23#33#0" expanded="true" />
@@ -186,13 +189,14 @@
         <option value="$PROJECT_DIR$/deepunion/test/train_DNN_torch.py" />
         <option value="$PROJECT_DIR$/deepunion/test/train_DNN_torch_dropout.py" />
         <option value="$PROJECT_DIR$/deepunion/test/train_DNN_torch_batchnormal.py" />
+        <option value="$PROJECT_DIR$/deepunion/test/train_models_tf.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="22" />
-    <option name="width" value="1600" />
-    <option name="height" value="838" />
+    <option name="y" value="23" />
+    <option name="width" value="1366" />
+    <option name="height" value="705" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -225,7 +229,8 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../onionnet" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -367,9 +372,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1600" height="838" extended-state="0" />
+    <frame x="0" y="23" width="1366" height="705" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17669411" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17546469" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection Results" order="0" sideWeight="0.49968335" weight="0.3293011" />
@@ -381,8 +387,8 @@
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.20709309" side_tool="true" visible="true" weight="0.21505377" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.7929069" visible="true" weight="0.21505377" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.20817845" side_tool="true" visible="true" weight="0.09656301" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.79182154" weight="0.22749591" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49841672" weight="0.3293011" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -735,7 +741,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/test/cat_csv_files.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
+        <state relative-caret-position="120">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="e#23#33#0" expanded="true" />
@@ -785,8 +791,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/test/train_DNN_torch_batchnormal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="83" column="38" selection-start-line="83" selection-start-column="38" selection-end-line="83" selection-end-column="38" />
+        <state relative-caret-position="-44">
+          <caret line="87" selection-start-line="87" selection-end-line="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deepunion/test/train_models_tf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="108" column="57" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
