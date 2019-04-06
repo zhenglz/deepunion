@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="050feb0a-9d84-4d89-be82-82dd8d075ca5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/deepunion.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deepunion.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deepunion/test/train_models_tf.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepunion/test/train_models_tf.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -48,8 +45,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/deepunion/test/train_models_tf.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="108" column="57" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
+            <state relative-caret-position="307">
+              <caret line="329" column="48" selection-start-line="329" selection-start-column="48" selection-end-line="329" selection-end-column="48" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -145,6 +142,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -368,7 +366,14 @@
       <option name="project" value="LOCAL" />
       <updated>1553137981950</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="add dnn net tf">
+      <created>1554385917245</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1554385917245</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -402,7 +407,8 @@
     <MESSAGE value="update a DNN model" />
     <MESSAGE value="add generate features" />
     <MESSAGE value="add branched net" />
-    <option name="LAST_COMMIT_MESSAGE" value="add branched net" />
+    <MESSAGE value="add dnn net tf" />
+    <option name="LAST_COMMIT_MESSAGE" value="add dnn net tf" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -798,8 +804,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/deepunion/test/train_models_tf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="108" column="57" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
+        <state relative-caret-position="307">
+          <caret line="329" column="48" selection-start-line="329" selection-start-column="48" selection-end-line="329" selection-end-column="48" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>

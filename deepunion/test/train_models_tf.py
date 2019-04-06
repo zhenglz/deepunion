@@ -106,10 +106,10 @@ def create_model_DNN(input_size, hidden_layers=[1000, 400, 200], lr=0.0001, maxp
 
     for i, hl in enumerate(hidden_layers):
         if i == 0:
-            model.add(tf.keras.layers.Dense(hl, input_dim=(input_size, ),
+            model.add(tf.keras.layers.Dense(hl, input_dim=input_size,
                                             kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
         else:
-            model.add(tf.keras.layers.Dense(hl, input_shape=(input_size, ),
+            model.add(tf.keras.layers.Dense(hl, input_dim=input_size,
                                             kernel_regularizer=tf.keras.regularizers.l2(0.01), ))
 
         model.add(tf.keras.layers.Activation("relu"))
@@ -327,8 +327,10 @@ if __name__ == "__main__":
                                  hidden_layers=args.hidden_layers,
                                  lr=args.lr_init, dropout=args.dropout)
         else:
-            model = create_model_DNN(args.n_features, hidden_layers=args.hidden_layers,
+            model = create_model_DNN(input_size=args.n_features, hidden_layers=args.hidden_layers,
                                      lr=args.lr_init, dropout=args.dropout)
+
+        print("Model Started")
 
         stopping = [[0, 999.9], ]
         history = []
