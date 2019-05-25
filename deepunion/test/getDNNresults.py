@@ -40,10 +40,10 @@ if __name__ == "__main__":
                 pooling = "no"
 
             if df.index.values[-1] == EPOCHS or df.shape[0] < args.patience + 1:
-                print("Model training per-terminated before a final solution fixed. ")
+                print(fn, "Model training per-terminated before a final solution fixed. ")
                 #sys.exit(0)
             else:
-                to_print = "%6s, %6s, %6s, %6s, %12s," % (pooling, batch, dropout, alpha, args.filters)
+                to_print = "%24s, %6s, %6s, %6s, %6s, %12s," % (fn, pooling, batch, dropout, alpha, args.filters)
                 #dat = df.iloc[-1*patience, :]
                 to_print += "%8.4f,%8.4f,%8.4f,%8.4f,%8.4f, %8.4f" %(df['loss'].values[-p], df['rmse_train'].values[-p], df['pcc_train'].values[-p],
                                                                      df['loss_val'].values[-p], df['rmse_val'].values[-p], df['pcc_val'].values[-p])

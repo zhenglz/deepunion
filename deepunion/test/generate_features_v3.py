@@ -64,7 +64,7 @@ class ProteinParser(object):
         table, bond = top.to_dataframe()
 
         # fetch the element type of each one of the protein atom
-        self.rec_ele = table['element'][self.receptor_indices]
+        self.rec_ele = table['element'][self.receptor_indices].values
         # fetch the coordinates of each one of the protein atom
         self.get_coordinates()
 
@@ -94,7 +94,7 @@ class LigandParser(object):
     def __init__(self, ligand_fn):
 
         self.lig = PandasMol2().read_mol2(ligand_fn)
-
+     #   print(self.lig.df.head())
         self.lig_data = self.lig.df
 
         self.lig_ele = None
@@ -103,15 +103,17 @@ class LigandParser(object):
 
     def get_element(self):
 
-        ele = self.lig_data["atom_type"]
+        ele = list(self.lig_data["atom_type"].values)
+     #   print(ele)
 
         self.lig_ele = list(map(get_ligand_elementtype, ele))
 
+    #    print(self.lig_ele)
         return self
 
     def get_coordinates(self):
-        self.coordinates = self.lig_data[['x', 'y', 'z']]
-
+        self.coordinates = self.lig_data[['x', 'y', 'z']].values
+#        print(self.coordinates)
         return self
 
     def parseMol2(self):
@@ -132,21 +134,22 @@ def get_protein_elementtype(e):
 
 def get_ligand_elementtype(e):
     all_elements = ["H", "C", "CAR", "Br", "Cl", "P", "F", "O", "N", "S", "DU"]
+    #print(e, e.split(".")[0])
     if e == "C.ar":
         return "CAR"
     elif e.split(".")[0] in all_elements:
-        return e
+        return e.split(".")[0]
     else :
         return "DU"
 
 
 def atomic_distance(dat):
-    return np.sqrt(np.sum(dat[0] - dat[1]))
+    return np.sqrt(np.sum(np.square(dat[0] - dat[1])))
 
 
 def distance_pairs(coord_pro, coord_lig):
     pairs = list(itertools.product(coord_pro, coord_lig))
-
+ #   print(pairs[:10])
     distances = map(atomic_distance, pairs)
 
     return list(distances)
@@ -154,10 +157,10 @@ def distance_pairs(coord_pro, coord_lig):
 
 def distance2counts(megadata):
 
-    d = megadata[0]
+    d = np.array(megadata[0])
     c = megadata[1]
 
-    return np.sum(np.array(d) <= c)
+    return np.sum((np.array(d) <= c)*1.0)
 
 
 def generate_features(pro_fn, lig_fn, ncutoffs):
@@ -166,8 +169,10 @@ def generate_features(pro_fn, lig_fn, ncutoffs):
     pro.parsePDB()
     protein_data = pd.DataFrame([])
     protein_data["element"] = pro.rec_ele
+    #print(pro.rec_ele)    
     for i, d in enumerate(['x', 'y', 'z']):
-        protein_data[d] = pro.coordinates[:, i]
+        # coordinates by mdtraj in unit nanometer
+        protein_data[d] = pro.coordinates[:, i] * 10.0
 
     lig = LigandParser(lig_fn)
     lig.parseMol2()
@@ -176,6 +181,7 @@ def generate_features(pro_fn, lig_fn, ncutoffs):
     for i, d in enumerate(['x', 'y', 'z']):
         ligand_data[d] = lig.coordinates[:, i]
 
+    #print("LIGAND COORD GENERATE")
     elements_ligand = ["H", "C", "CAR", "O", "N", "S", "P", "DU", "Br", "Cl", "F"]
     elements_protein= ["H", "C", "O", "N", "S", "DU"]
 
@@ -186,17 +192,26 @@ def generate_features(pro_fn, lig_fn, ncutoffs):
             protein_xyz = protein_data[protein_data['element'] == ep][['x', 'y', 'z']].values
             ligand_xyz = ligand_data[ligand_data['element'] == el][['x', 'y', 'z']].values
 
-            distances = distance_pairs(protein_xyz, ligand_xyz)
+     #       print(ligand_xyz[:10], protein_xyz[:10])
+            #distances = distance_pairs(protein_xyz, ligand_xyz)
+            #print(distances[:10])
             counts = np.zeros(len(n_cutoffs))
-            for i, c in enumerate(n_cutoffs):
-                single_count = distance2counts((distances, c))
-                if i > 0:
-                    single_count = single_count - counts[i-1]
-                counts[i] = single_count
+
+     #       print(el, ep, "GET ELE TYPE SPEC DISTANCES")
+            if len(protein_xyz) and len(ligand_xyz):
+                #print(protein_xyz.shape, ligand_xyz.shape)
+                distances = distance_pairs(protein_xyz, ligand_xyz)
+                
+                #print(sorted(distances)[:10], sorted(distances)[-10:])
+                for i, c in enumerate(n_cutoffs):
+                    single_count = distance2counts((distances, c))
+                    if i > 0:
+                        single_count = single_count - counts[i-1]
+                    counts[i] = single_count
 
             feature_id = "%s_%s" % (el, ep)
             onionnet_counts[feature_id] = counts
-
+    
     return onionnet_counts
 
 
@@ -270,7 +285,7 @@ if __name__ == "__main__":
 
     # defining the shell structures ... (do not change)
     n_shells = 60
-    n_cutoffs = np.linspace(0.1, 3.05, n_shells)
+    n_cutoffs = np.linspace(0.1, 3.05, n_shells) * 10
 
     results = []
     ele_pairs = []
@@ -278,22 +293,25 @@ if __name__ == "__main__":
 
     # computing the features now ...
     for p in inputs:
-        pro_fn = p[0]
-        lig_fn = p[1]
+        p = p[0]
+        pro_fn = p + "/%s_protein.pdb" % p
+        lig_fn = p + "/%s_ligand.mol2" % p
 
-        try:
+#        try:
+        if True:
             # the main function for featurization ...
             r = generate_features(pro_fn, lig_fn, n_cutoffs)
-            keys = r.cloumns
+ #           print(r.sum(axis=0))
+            keys = list(r.columns)
             results.append(r.values.ravel())
-            print(rank, pro_fn, lig_fn)
+#            print(rank, pro_fn, lig_fn)
 
-        except:
+        #except:
             # r = results[-1]
-            r = list([0., ] * 66 * n_shells)
-            results.append(r)
+         #   r = list([0., ] * 66 * n_shells)
+          #  results.append(r)
             # success.append(0.)
-            print("Not successful. ", pro_fn, lig_fn)
+            #print("Not successful. ", pro_fn, lig_fn)
 
     # saving features to a file now ...
     df = pd.DataFrame(results)
