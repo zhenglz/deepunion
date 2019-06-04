@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from sklearn.externals import joblib
 import argparse
-from argparse import RawTextHelpFormatter
+from argparse import RawTextHelpFormatter, RawDescriptionHelpFormatter
 import os
 from scipy import stats
 import keras
@@ -20,6 +20,17 @@ def rmse(y_true, y_pred):
 def pcc(y_true, y_pred):
     pcc = stats.pearsonr(y_true, y_pred)
     return pcc[0]
+
+
+def pcc_rmse(y_true, y_pred):
+    global alpha
+
+    dev = np.square(y_true.ravel() - y_pred.ravel())
+    r = np.sqrt(np.sum(dev) / y_true.shape[0])
+
+    p = stats.pearsonr(y_true, y_pred)[0]
+
+    return (1-p)*alpha + r * (1 - alpha)
 
 
 def PCC_RMSE(y_true, y_pred):
