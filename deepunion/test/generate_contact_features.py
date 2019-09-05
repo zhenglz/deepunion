@@ -385,6 +385,7 @@ if __name__ == "__main__":
         try:
             # the main function for featurization ...
             r= generate_contact_features(p, n_cutoffs, verbose=args.v)
+
             print(rank, p)
 
         except RuntimeError:

@@ -1,6 +1,4 @@
-# deepunion
-A collection of drug discovery tools
-
+# Deepunion: A collection of drug discovery tools for ligand preparation, featurization and docking.
 
 ## Installation
 Install anaconda first.
